@@ -1,3 +1,6 @@
+
+
+
 class PartData:
 	def __init__(self, timestamp, part_id, source, part_data):
 		self.timestamp = timestamp # Timestamp e.g. 1516193959559
