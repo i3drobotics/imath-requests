@@ -1,4 +1,4 @@
-# iMath REST API
+# iMath Requests
 Python package for communication with the iMath data platform REST API
 
 ## Install
