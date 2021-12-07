@@ -71,13 +71,14 @@ jobs:
           python setup.py sdist bdist_wheel
           twine upload --repository pypi dist/*
       # Create release body
-      - name: Get linked issues
-        uses: kin/gh-action-get-linked-issues@v1.0
-        id: linked-issues
-        with:
-          access-token: "{{ secrets.GITHUB_TOKEN }}"
-      - name: Write issues to file
-        run: echo "${{ steps.linked-issues.outputs.issues }}" > issues.md
+      # - name: Get linked issues
+      #   id: linked-issues
+      #   uses: hossainemruz/linked-issues@main
+      #   with:
+      #     pr_url: ${{ github.event.pull_request.html_url }}
+      #     format: IssueURL
+      # - name: Write issues to file
+      #   run: echo "${{ steps.linked-issues.outputs.issues }}" > issues.md
       - name: Create release body
         run: ./scripts/create_release_body.sh
       # Create GitHub release
