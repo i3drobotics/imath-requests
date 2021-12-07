@@ -25,9 +25,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
       # Get latest released version
-      - name: Find latest release version
-        uses: actions-ecosystem/action-get-latest-tag@v1
-        id: latest-tag
+      - uses: oprypin/find-latest-tag@v1
+        with:
+          repository: i3drobotics/imath-requests  # The repository to scan.
+          releases-only: true  # All relevant tags have a GitHub release for them.
+        id: latest-tag  # The step ID to refer to later.
+      # Get release type
+      - name: Release type is major
+        if: startsWith( github.head_ref, 'major')
+        shell: bash
+        run: echo "RELEASE_TYPE=major" >> $GITHUB_ENV
+      - name: Release type is minor
+        if: startsWith( github.head_ref, 'minor')
+        shell: bash
+        run: echo "RELEASE_TYPE=minor" >> $GITHUB_ENV
+      - name: Release type is patch
+        if: ${{ !startsWith( github.head_ref, 'major') && !startsWith( github.head_ref, 'minor') }}
+        shell: bash
+        run: echo "RELEASE_TYPE=patch" >> $GITHUB_ENV
       # Generate new release version
       - name: Generate version (major) # If contains prefix major/xxx
         if: startsWith( github.head_ref, 'major')
@@ -35,21 +50,7 @@ jobs:
         id: bump-version
         with:
           current_version: ${{ steps.latest-tag.outputs.tag }}
-          level: major
-      - name: Generate version (minor) # If contains prefix minor/xxx
-        if: startsWith( github.head_ref, 'minor')
-        uses: actions-ecosystem/action-bump-semver@v1
-        id: bump-version
-        with:
-          current_version: ${{ steps.latest-tag.outputs.tag }}
-          level: minor
-      - name: Generate version (patch)
-        if: ${{ !startsWith( github.head_ref, 'major') && !startsWith( github.head_ref, 'minor') }}
-        uses: actions-ecosystem/action-bump-semver@v1
-        id: bump-version
-        with:
-          current_version: ${{ steps.latest-tag.outputs.tag }}
-          level: patch
+          level: ${{ env.RELEASE_TYPE }}
       # Add generated version to VERSION file
       - name: Add to Version file
         shell: bash
