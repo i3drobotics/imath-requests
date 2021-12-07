@@ -1,5 +1,5 @@
 .. toctree::
-   :caption: Python package for communication with the iMath data platform REST API
+   :caption: iMath Requests
    :maxdepth: 2
 
    install
