@@ -86,6 +86,7 @@ jobs:
         run: |
           sudo apt-get install python3-sphinx
           python -m pip install sphinx sphinx-rtd-theme
+          python -m pip install dist/*.whl
           cd docs
           make html
       # Deploy docs
