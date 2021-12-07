@@ -72,10 +72,11 @@ jobs:
           twine upload --repository pypi dist/*
       # Create release body
       - name: Get linked issues
-        uses: kin/gh-action-get-linked-issues@v1.0
         id: linked-issues
+        uses: hossainemruz/linked-issues@main
         with:
-          access-token: "{{ secrets.GITHUB_TOKEN }}"
+          pr_url: ${{ github.event.pull_request.html_url }}
+          format: IssueURL
       - name: Write issues to file
         run: echo "${{ steps.linked-issues.outputs.issues }}" > issues.md
       - name: Create release body
