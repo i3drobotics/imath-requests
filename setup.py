@@ -1,3 +1,5 @@
+"""setup.py: python package setup."""
+
 import setuptools
 
 with open('release.md', 'r', encoding='utf-8') as fh:
@@ -41,11 +43,5 @@ setuptools.setup(
     extras_require={
         'dev': ['check-manifest'],
         # 'test': ['coverage'],
-    },
-    # entry_points={
-    #     'console_scripts': [  # This can provide executable scripts
-    #         'run=examplepy:main',
-    # You can execute `run` in bash to run `main()` in src/examplepy/__init__.py
-    #     ],
-    # },
+    }
 )

@@ -1,11 +1,24 @@
-import unittest
+"""
+test_requests.py
+====================================
+Unit testing for requests module
+"""
 
+import unittest
 from imath_requests.requests import PartData
 
 
-class TestSimple(unittest.TestCase):
+class TestRequests(unittest.TestCase):
+    """
+    Unit testing for requests module.
+
+    """
 
     def test_part_data_json(self):
+        """
+        Tests part data json generation.
+
+        """
         # TODO add test for part data json
         # test_part_data_json = {
         #     "timestamp": "1516193959559",
