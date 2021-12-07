@@ -20,5 +20,5 @@ echo "Install the package using pip:" >> release.md
 echo "\`\`\`" >> release.md
 echo "python -m pip install imath-requests" >> release.md
 echo "\`\`\`" >> release.md
-echo "## Changes"
-echo "$ISSUES"
+echo "## Changes" >> release.md
+echo "$ISSUES" >> release.md
