@@ -9,8 +9,9 @@ VERSION=$(cat $SCRIPT_PATH/../version.template)
 VERSION=${VERSION//$'\n'/} # Remove newlines.
 VERSION=${VERSION//$'\r'/} # Remove carriage returns.
 
+# TODO fix getting linked issues from pull request in workflow
 # read issue string from file (issues.md should have been generated in workflow step)
-ISSUES=$(cat $SCRIPT_PATH/../issues.md)
+# ISSUES=$(cat $SCRIPT_PATH/../issues.md)
 # TODO format issues string
 
 cd $SCRIPT_PATH/../
@@ -20,5 +21,5 @@ echo "Install the package using pip:" >> release.md
 echo "\`\`\`" >> release.md
 echo "python -m pip install imath-requests" >> release.md
 echo "\`\`\`" >> release.md
-echo "## Changes" >> release.md
-echo "$ISSUES" >> release.md
+# echo "## Changes" >> release.md
+# echo "$ISSUES" >> release.md
