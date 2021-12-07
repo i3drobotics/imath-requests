@@ -1,4 +1,7 @@
-import importlib.metadata
-__version__ = importlib.metadata.version('imath_requests')
+try:
+    from importlib import metadata
+except ImportError: # for Python<3.8
+    import importlib_metadata as metadata
+__version__ = metadata.version('imath_requests')
 
 from .requests import *
