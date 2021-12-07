@@ -5,17 +5,13 @@ set -e
 
 SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
-VERSION=$(cat $SCRIPT_PATH/../version.template)
-VERSION=${VERSION//$'\n'/} # Remove newlines.
-VERSION=${VERSION//$'\r'/} # Remove carriage returns.
-
 # TODO fix getting linked issues from pull request in workflow
 # read issue string from file (issues.md should have been generated in workflow step)
 # ISSUES=$(cat $SCRIPT_PATH/../issues.md)
 # TODO format issues string
 
 cd $SCRIPT_PATH/../
-echo "# iMATH Requests $VERSION" > release.md
+echo "# iMATH Requests" > release.md
 echo "## Install" >> release.md
 echo "Install the package using pip:" >> release.md
 echo "\`\`\`" >> release.md
