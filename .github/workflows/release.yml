@@ -1,8 +1,11 @@
-name: Release
+name: Deployment
 
+# only trigger on main branch pull request close events
+# used to deploy code after merging
 on:
-  release:
-    types: [created]
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
 
 jobs:
   deploy:
@@ -17,6 +20,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
+      # TODO add automatic versioning
       - name: Build and publish
         env:
           TWINE_USERNAME: __token__
@@ -24,3 +28,9 @@ jobs:
         run: |
           python setup.py sdist bdist_wheel
           twine upload --repository pypi dist/*
+      - name: Merge main -> prod
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: prod
+          github_token: ${{ github.token }}
