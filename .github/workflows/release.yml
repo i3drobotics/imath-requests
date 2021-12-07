@@ -68,8 +68,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           draft: false
-          body: iMATH Requests v${{ steps.bump-version.outputs.new_version }}
-          tag_name: v${{ steps.bump-version.outputs.new_version }}
+          body: iMATH Requests ${{ steps.bump-version.outputs.new_version }}
+          tag_name: ${{ steps.bump-version.outputs.new_version }}
           files: |
             dist/*
       # Merge branch into production
