@@ -1,26 +1,81 @@
-# name: Release
+name: Deployment
 
-# on:
-#   release:
-#     types: [created]
+# Only trigger on main branch pull request close events
+# used to deploy code after merging
+# Versioning is automatically generated when merging, this is created by detecting the branch prefix:
+# - 'major/' prefix for major release (e.g. N.x.x)
+# - 'minor/' prefix for minor release (e.g. x.N.x)
+# - no prefix for patch release (e.g. x.x.N)
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Set up Python
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: "3.x"
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install setuptools wheel twine
-#       - name: Build and publish
-#         env:
-#           TWINE_USERNAME: __token__
-#           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-#         run: |
-#           python setup.py sdist bdist_wheel
-#           twine upload --repository pypi dist/*
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+      # Get latest released version
+      - name: Find latest release version
+        uses: actions-ecosystem/action-get-latest-tag@v1
+        id: latest-tag
+      # Generate new release version
+      - name: Generate version (major) # If contains prefix major/xxx
+        if: startsWith( github.head_ref, 'major')
+        uses: actions-ecosystem/action-bump-semver@v1
+        id: bump-version
+        with:
+          current_version: ${{ steps.latest-tag.outputs.tag }}
+          level: major
+      - name: Generate version (minor) # If contains prefix minor/xxx
+        if: startsWith( github.head_ref, 'minor')
+        uses: actions-ecosystem/action-bump-semver@v1
+        id: bump-version
+        with:
+          current_version: ${{ steps.latest-tag.outputs.tag }}
+          level: minor
+      - name: Generate version (patch)
+        if: ${{ !startsWith( github.head_ref, 'major') && !startsWith( github.head_ref, 'minor') }}
+        uses: actions-ecosystem/action-bump-semver@v1
+        id: bump-version
+        with:
+          current_version: ${{ steps.latest-tag.outputs.tag }}
+          level: patch
+      # Add generated version to VERSION file
+      - name: Add to Version file
+        shell: bash
+        run: |
+          echo "${{ steps.bump-version.outputs.new_version }}" > version.template
+      # Build and publish release
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload --repository pypi dist/*
+      # Create GitHub release
+      - name: GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          body: iMATH Requests v${{ steps.bump-version.outputs.new_version }}
+          tag_name: v${{ steps.bump-version.outputs.new_version }}
+          files: |
+            dist/*
+      # Merge branch into production
+      - name: Merge main -> prod
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: prod
+          github_token: ${{ github.token }}
