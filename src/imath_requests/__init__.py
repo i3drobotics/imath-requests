@@ -1,3 +1,4 @@
-from .requests import *
+import importlib.metadata
+__version__ = importlib.metadata.version('imath_requests')
 
-__version__ = "0.1.0"
+from .requests import *
