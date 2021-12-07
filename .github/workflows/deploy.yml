@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools wheel twine
+          pip install -r requirements.txt
       # Get git variables
       - name: Get commit variables
         id: commit-vars
@@ -63,14 +63,22 @@ jobs:
         shell: bash
         run: |
           echo "${{ steps.bump-version.outputs.new_version }}" > version.template
-      # Build and publish release
-      - name: Build and publish
+      # Build
+      - name: Build
+        run: python setup.py sdist bdist_wheel
+      # Generate docs using Sphinx
+      - name: Docs
+        run: |
+          sudo apt-get install python3-sphinx
+          python -m pip install dist/*.whl
+          cd docs/sphinx
+          make html
+      # Publish to pip
+      - name: Build
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          python setup.py sdist bdist_wheel
-          twine upload --repository pypi dist/*
+        run: twine upload --repository pypi dist/*
       # Create GitHub release
       - name: GitHub release
         uses: softprops/action-gh-release@v1
