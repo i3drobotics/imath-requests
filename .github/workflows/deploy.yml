@@ -86,15 +86,14 @@ jobs:
         run: |
           sudo apt-get install python3-sphinx
           python -m pip install sphinx sphinx-rtd-theme
-          python -m pip install dist/*.whl
-          cd docs/sphinx
+          cd docs
           make html
       # Deploy docs
       - name: Deploy docs
         uses: JamesIves/github-pages-deploy-action@4.1.7
         with:
           branch: docs
-          folder: docs/static/html
+          folder: docs/_build/html
       # Merge branch into production
       - name: Merge main -> prod
         uses: devmasx/merge-branch@master
