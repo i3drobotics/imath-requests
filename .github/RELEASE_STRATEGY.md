@@ -1,7 +1,7 @@
 # Release strategy
 This repository uses [GitLab Flow](https://docs.gitlab.com/ee/topics/gitlab_flow.html) strategy.
 
-This repository has three permanent branches: 'main', and 'prod'.
+This repository has three permanent branches: 'main', 'prod', and 'docs'.
 ### Main
 This branch has the code that will be released on successful build (likely stable).
 #### Rules
@@ -19,3 +19,10 @@ This is the latest production code (stable).
 - No code will be directly written to this branch.
 - Merge 'main' branch is merged into this branch on successful release
 - Only 'main' branch can merge into this branch.
+
+### Docs
+This is static website for documentation of the latest production code (stable).
+#### Rules
+- No code will be directly written to this branch.
+- GitHub workflow will commit to this branch on successful deployment. 
+- Only deployment GitHub workflow can commit to this branch.
