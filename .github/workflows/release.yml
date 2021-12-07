@@ -63,12 +63,20 @@ jobs:
         run: |
           python setup.py sdist bdist_wheel
           twine upload --repository pypi dist/*
+      # Create release body
+      - name: Get linked issues
+        uses: kin/gh-action-get-linked-issues@v1.0
+        id: linked-issues
+      - name: Write issues to file
+        run: echo "${{ steps.linked-issues.outputs.issues }}" > issues.md
+      - name: Create release body
+        run: ./scripts/create_release_body.sh
       # Create GitHub release
       - name: GitHub release
         uses: softprops/action-gh-release@v1
         with:
           draft: false
-          body: iMATH Requests ${{ steps.bump-version.outputs.new_version }}
+          body-path: release.md
           tag_name: ${{ steps.bump-version.outputs.new_version }}
           files: |
             dist/*
@@ -79,3 +87,4 @@ jobs:
           type: now
           target_branch: prod
           github_token: ${{ github.token }}
+          message: ${{ github.event.commits[0].message }}
