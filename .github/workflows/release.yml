@@ -31,21 +31,20 @@ jobs:
           releases-only: true  # All relevant tags have a GitHub release for them.
         id: latest-tag  # The step ID to refer to later.
       # Get release type
-      - name: Release type is major
+      - name: Release type is major # If contains prefix major/xxx
         if: startsWith( github.head_ref, 'major')
         shell: bash
         run: echo "RELEASE_TYPE=major" >> $GITHUB_ENV
-      - name: Release type is minor
-        if: startsWith( github.head_ref, 'minor')
+      - name: Release type is minor # If contains prefix minor/xxx
+        if: startsWith( github.head_ref, 'minor') 
         shell: bash
         run: echo "RELEASE_TYPE=minor" >> $GITHUB_ENV
-      - name: Release type is patch
+      - name: Release type is patch # If contains no prefix
         if: ${{ !startsWith( github.head_ref, 'major') && !startsWith( github.head_ref, 'minor') }}
         shell: bash
         run: echo "RELEASE_TYPE=patch" >> $GITHUB_ENV
       # Generate new release version
-      - name: Generate version (major) # If contains prefix major/xxx
-        if: startsWith( github.head_ref, 'major')
+      - name: Generate new version
         uses: actions-ecosystem/action-bump-semver@v1
         id: bump-version
         with:
