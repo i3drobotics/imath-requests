@@ -2,5 +2,3 @@ include pyproject.toml
 include *.md
 include LICENSE
 recursive-include tests test*.py
-include versioneer.py
-include src/imath_requests/_version.py

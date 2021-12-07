@@ -1,13 +1,10 @@
 import setuptools
-import versioneer
 
 with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name='imath_requests',
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
     author='Industrial 3D Robotics',
     author_email='bknight@i3drobotics.com',
     description='Communication with the iMath data platform REST API',
