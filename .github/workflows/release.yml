@@ -78,7 +78,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           draft: false
-          body-path: release.md
+          body_path: release.md
           tag_name: ${{ steps.bump-version.outputs.new_version }}
           files: |
             dist/*
