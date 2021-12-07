@@ -68,9 +68,6 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 .pybuilder/
 target/
@@ -137,5 +134,10 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Ignore built sphinx doc
-docs/static
+# Sphinx documentation
+!docs/_build/
+docs/_build/*
+!docs/_build/html/
+docs/_build/html/*
+# Include .nojekyll for github pages
+!docs/_build/**/.nojekyll
