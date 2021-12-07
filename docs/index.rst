@@ -2,7 +2,7 @@
    :caption: Python package for communication with the iMath data platform REST API
    :maxdepth: 2
 
-   instal
+   install
    examples
    autocode
    faq
