@@ -97,4 +97,4 @@ jobs:
           type: now
           target_branch: prod
           github_token: ${{ github.token }}
-          message: Merged main from ${{ steps.commit-vars.outputs.branch }} ${{ steps.commit-vars.outputs.sha_short }}
+          message: merged ${{ steps.commit-vars.outputs.sha_short }}
