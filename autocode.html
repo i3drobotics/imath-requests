@@ -83,10 +83,8 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.requests.</span></span><span class="sig-name descname"><span class="pre">ImageAnalysisData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">part_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failures</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisData" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Image meta data helper class.</p>
-<p>(Not yet implimented)
-Includes addition functions creating json data
-from image meta data for easy use in REST API.
-TODO finish implimenting image analysis data.</p>
+<p>Includes addition functions creating json data
+from image meta data for easy use in REST API.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisData.part_id">
 <span class="sig-name descname"><span class="pre">part_id</span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisData.part_id" title="Permalink to this definition"></a></dt>
@@ -134,7 +132,7 @@ TODO finish implimenting image analysis data.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisData.failures">
 <span class="sig-name descname"><span class="pre">failures</span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisData.failures" title="Permalink to this definition"></a></dt>
-<dd><p>TODO impliment</p>
+<dd><p>list of ImageAnalysisFailure</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>list</p>
@@ -146,7 +144,86 @@ TODO finish implimenting image analysis data.</p>
 <dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisData.get_json">
 <span class="sig-name descname"><span class="pre">get_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisData.get_json" title="Permalink to this definition"></a></dt>
 <dd><p>Convert ImageAnalysisData into json string for use in REST API.</p>
-<p>(Not yet implimented)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Json formatted string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisFailure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.requests.</span></span><span class="sig-name descname"><span class="pre">ImageAnalysisFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualifying_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Image analysis failure helper class.</p>
+<p>Includes addition functions creating json data
+from part data for easy use in REST API.
+# TODO impliment class for position
+# TODO impliment class for dimension</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisFailure.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure.id" title="Permalink to this definition"></a></dt>
+<dd><p>Unique failure id e.g. 124355435321576</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisFailure.failure">
+<span class="sig-name descname"><span class="pre">failure</span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure.failure" title="Permalink to this definition"></a></dt>
+<dd><p>Failure type id e.g. 4711</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisFailure.position">
+<span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure.position" title="Permalink to this definition"></a></dt>
+<dd><p>Position on the part where the image was taken</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisFailure.dimension">
+<span class="sig-name descname"><span class="pre">dimension</span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure.dimension" title="Permalink to this definition"></a></dt>
+<dd><p>Dimension of the area of the part, which is on the image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisFailure.qualifying_metadata">
+<span class="sig-name descname"><span class="pre">qualifying_metadata</span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure.qualifying_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>Qualifying metadata should be a key value pair array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisFailure.get_json">
+<span class="sig-name descname"><span class="pre">get_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure.get_json" title="Permalink to this definition"></a></dt>
+<dd><p>Convert ImageAnalysisFailure into json string for use in REST API.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Json formatted string</p>
@@ -243,7 +320,9 @@ from image meta data for easy use in REST API.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Image Value helper class.</p>
 <p>Includes addition functions creating json data
-from part data for easy use in REST API.</p>
+from part data for easy use in REST API.
+# TODO impliment class for position
+# TODO impliment class for dimension</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imath_requests.requests.ImageValue.value">
 <span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#imath_requests.requests.ImageValue.value" title="Permalink to this definition"></a></dt>
