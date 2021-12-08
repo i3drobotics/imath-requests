@@ -40,16 +40,19 @@ jobs:
           releases-only: true  # All relevant tags have a GitHub release for them.
         id: latest-tag  # The step ID to refer to later.
       # Get release type
+      - name: Set default release type # Set default to patch if no prefix is recognised
+        shell: bash
+        run: echo "RELEASE_TYPE=patch" >> $GITHUB_ENV
       - name: Release type is major # If contains prefix major/xxx
         if: startsWith( github.head_ref, 'major')
         shell: bash
         run: echo "RELEASE_TYPE=major" >> $GITHUB_ENV
-      - name: Release type is minor # If contains prefix minor/xxx
-        if: startsWith( github.head_ref, 'minor') 
+      - name: Release type is minor # If contains prefix minor/xxx or feature/xxx
+        if: ${{ startsWith( github.head_ref, 'minor') || startsWith( github.head_ref, 'feature') }}
         shell: bash
         run: echo "RELEASE_TYPE=minor" >> $GITHUB_ENV
-      - name: Release type is patch # If contains no prefix
-        if: ${{ !startsWith( github.head_ref, 'major') && !startsWith( github.head_ref, 'minor') }}
+      - name: Release type is patch # If contains prefix patch/xxx, bugfix/xxx
+        if: ${{ startsWith( github.head_ref, 'patch') || startsWith( github.head_ref, 'bugfix') }}
         shell: bash
         run: echo "RELEASE_TYPE=patch" >> $GITHUB_ENV
       # Generate new release version
