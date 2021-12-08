@@ -72,6 +72,8 @@ class ImageValue:
 
     Includes addition functions creating json data
     from part data for easy use in REST API.
+    # TODO impliment class for position
+    # TODO impliment class for dimension
 
     Attributes
     ----------
@@ -209,6 +211,8 @@ class ImageAnalysisFailure:
 
     Includes addition functions creating json data
     from part data for easy use in REST API.
+    # TODO impliment class for position
+    # TODO impliment class for dimension
 
     Attributes
     ----------
