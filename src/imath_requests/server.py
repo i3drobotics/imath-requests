@@ -4,6 +4,7 @@ server.py
 Mock server for testing REST API.
 """
 
+import os
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 
@@ -157,31 +158,48 @@ class ImageAnalysisDataEndpoint(Resource):
         return {'data': json_data}, 200  # return data with 200 OK
 
 
-class Server:
-    def __init__(self):
-        self.app = Flask(__name__)
-        self.api = Api(self.app)
+def create_app(test_config=None):
+    # create and configure the app
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(
+        SECRET_KEY='dev',
+        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+    )
 
-        @self.app.route('/')
-        def index():
-            page = """ 
-                <h1>Welcome to iMath Requests test server</h1>
-                <h3>The following API endpoints are available:</h3>
-                <ul>
-                    <li>/part_data</li>
-                    <li>/image_meta_data</li>
-                    <li>/image_analysis_data</li>
-                </ul>
-            """
-            return page
+    if test_config is None:
+        # load the instance config, if it exists, when not testing
+        app.config.from_pyfile('config.py', silent=True)
+    else:
+        # load the test config if passed in
+        app.config.from_mapping(test_config)
 
-        self.api.add_resource(PartDataEndpoint, '/part_data')
-        self.api.add_resource(ImageMetaDataEndpoint, '/image_meta_data')
-        self.api.add_resource(ImageAnalysisDataEndpoint, '/image_analysis_data')
+    # ensure the instance folder exists
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
 
-    def run(self):
-        self.app.run()
+    api = Api(app)
+
+    @app.route('/')
+    def index():
+        page = """ 
+            <h1>Welcome to iMath Requests test server</h1>
+            <h3>The following API endpoints are available:</h3>
+            <ul>
+                <li>/part_data</li>
+                <li>/image_meta_data</li>
+                <li>/image_analysis_data</li>
+            </ul>
+        """
+        return page
+
+    api.add_resource(PartDataEndpoint, '/part_data')
+    api.add_resource(ImageMetaDataEndpoint, '/image_meta_data')
+    api.add_resource(ImageAnalysisDataEndpoint, '/image_analysis_data')
+
+    return app, api
 
 if __name__ == "__main__":
-    server = Server()
-    server.run()
+    app, api = create_app()
+    app.run()

@@ -5,16 +5,27 @@ Unit testing for server module
 """
 
 import unittest
-from imath_requests.server import Server
+import pytest
+import tempfile
+from imath_requests.server import create_app
 
 
-class TestServer(unittest.TestCase):
-    """
-    Unit testing for Server class in requests module.
+@pytest.fixture
+def client():
+    db_fd, db_path = tempfile.mkstemp()
+    app, api = create_app({'TESTING': True, 'DATABASE': db_path})
 
-    """
-    def test_init_server(self):
-        server = Server()
+    with app.test_client() as client:
+        with app.app_context():
+            init_db()
+        yield client
 
-    def test_server_run(self):
-        pass
+    os.close(db_fd)
+    os.unlink(db_path)
+
+
+def test_empty_db(client):
+    """Start with a blank database."""
+
+    rv = client.get('/')
+    assert b'No entries here so far' in rv.data
