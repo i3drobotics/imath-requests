@@ -7,6 +7,35 @@ Unit testing for requests module
 import unittest
 from imath_requests.requests import PartData, ImageAnalysisData, ImageAnalysisFailure
 from imath_requests.requests import ImageValue, ImageMetaData
+from imath_requests.requests import Position, Dimension
+
+
+class TestPosition(unittest.TestCase):
+    """
+    Unit testing for Position class in requests module.
+
+    """
+    def test_init_position(self):
+        position = Position(44.2, 17.4, 0.0)
+
+    def test_position_json(self):
+        position = Position(44.2, 17.4, 0.0)
+        position_json = position.get_json()
+        # TODO add position json generation test
+
+
+class TestDimension(unittest.TestCase):
+    """
+    Unit testing for Dimension class in requests module.
+
+    """
+    def test_init_dimension(self):
+        dimension = Dimension(44.2, 17.4, 0.0)
+
+    def test_dimension_json(self):
+        dimension = Dimension(5.2, 1.0, 0.0)
+        dimension_json = dimension.get_json()
+        # TODO add dimension json generation test
 
 
 class TestRequestsPartData(unittest.TestCase):
@@ -82,6 +111,7 @@ class TestRequestsPartData(unittest.TestCase):
         ]
         part_data = PartData(
             "1516193959559", "Part1234", "I3DR_DESKTOP_ABC123", part_data_list)
+        part_data.get_json()
         # TODO add part data json generation test
 
 
@@ -95,8 +125,8 @@ class TestRequestsImageValue(unittest.TestCase):
         Test generation of image value class
         """
         image_value = ImageValue(
-            "test001.png", "1516193959559", "(44.2,17.4)",
-            "(5.2,1)", "1"
+            "test001.png", "1516193959559", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), "1"
         )
 
     def test_image_value_json(self):
@@ -105,9 +135,10 @@ class TestRequestsImageValue(unittest.TestCase):
 
         """
         image_value = ImageValue(
-            "test001.png", "1516193959559", "(44.2,17.4)",
-            "(5.2,1)", "1"
+            "test001.png", "1516193959559", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), "1"
         )
+        image_value.get_json()
         # TODO add image value json generation test
 
 
@@ -121,8 +152,8 @@ class TestRequestsImageMetaData(unittest.TestCase):
         Test generation of image meta data class
         """
         image_value = ImageValue(
-            "test001.png", "1516193959559", "(44.2,17.4)",
-            "(5.2,1)", "1"
+            "test001.png", "1516193959559", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), "1"
         )
         image_value_list = [
             image_value,
@@ -149,8 +180,8 @@ class TestRequestsImageMetaData(unittest.TestCase):
 
         """
         image_value = ImageValue(
-            "test001.png", "1516193959559", "(44.2,17.4)",
-            "(5.2,1)", "1"
+            "test001.png", "1516193959559", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), "1"
         )
         image_value_list = [
             image_value,
@@ -170,6 +201,7 @@ class TestRequestsImageMetaData(unittest.TestCase):
             "Part1234", "Camera1", "I3DR_DESKTOP_ABC123",
             image_value_list, qualifying_metadata
         )
+        image_meta_data.get_json()
         # TODO add image meta data json generation test
 
 
@@ -193,8 +225,8 @@ class TestRequestsImageAnalysisFailure(unittest.TestCase):
             }
         ]
         image_analysis_failure = ImageAnalysisFailure(
-            "124355435321576", "4711", "(44.2,17.4)",
-            "(5.2,1)", qualifying_metadata
+            "124355435321576", "4711", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), qualifying_metadata
         )
 
     def test_image_analysis_failure_json(self):
@@ -213,9 +245,10 @@ class TestRequestsImageAnalysisFailure(unittest.TestCase):
             }
         ]
         image_analysis_failure = ImageAnalysisFailure(
-            "124355435321576", "4711", "(44.2,17.4)",
-            "(5.2,1)", qualifying_metadata
+            "124355435321576", "4711", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), qualifying_metadata
         )
+        image_analysis_failure.get_json()
         # TODO add image analysis failure json generation test
 
 
@@ -239,8 +272,8 @@ class TestRequestsImageAnalysisData(unittest.TestCase):
             }
         ]
         image_analysis_failure = ImageAnalysisFailure(
-            "124355435321576", "4711", "(44.2,17.4)",
-            "(5.2,1)", qualifying_metadata
+            "124355435321576", "4711", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), qualifying_metadata
         )
         image_analysis_failure_list = [
             image_analysis_failure,
@@ -267,8 +300,8 @@ class TestRequestsImageAnalysisData(unittest.TestCase):
             }
         ]
         image_analysis_failure = ImageAnalysisFailure(
-            "124355435321576", "4711", "(44.2,17.4)",
-            "(5.2,1)", qualifying_metadata
+            "124355435321576", "4711", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), qualifying_metadata
         )
         image_analysis_failure_list = [
             image_analysis_failure,
@@ -278,6 +311,7 @@ class TestRequestsImageAnalysisData(unittest.TestCase):
             "Part1234", "I3DR_DESKTOP_ABC123",
             "test001.png", "1516193959559", image_analysis_failure_list
         )
+        image_analysis_data.get_json()
         # TODO add image analysis data json generation test
 
 
