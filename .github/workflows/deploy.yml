@@ -20,10 +20,11 @@ jobs:
     steps:
       # Wait on other deployments to avoid collisions
       - name: Turnstyle
-        uses: softprops/turnstyle@v1
+        uses: vigneshmsft/turnstyle@initial-wait-seconds
         with:
           # bail on running immediately if busy
           abort-after-seconds: 1
+          poll-interval-seconds: 1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       # Checkout code
