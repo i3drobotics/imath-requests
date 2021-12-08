@@ -66,14 +66,116 @@ class PartData:
         }
 
 
+class Dimension:
+    """
+    Dimension helper class.
+
+    Includes addition functions creating json data
+    from part data for easy use in REST API.
+
+    Attributes
+    ----------
+    x: float
+        X-axis dimension
+    y: float
+        Y-axis dimension
+    z: float
+        Z-axis dimension
+
+    """
+    def __init(self, x:float, y:float, z: float):
+        """
+        Dimension construction.
+
+        Parameters
+        ----------
+        x: float
+            X-axis dimension
+        y: float
+            Y-axis dimension
+        z: float
+            Z-axis dimension
+
+        """
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def get_json(self):
+        """
+        Convert Dimension into json string for use in REST API.
+
+        Returns
+        -------
+        dict
+            Json formatted string
+
+        """
+        return {
+            self.x,
+            self.y,
+            self.z
+        }
+
+
+class Position:
+    """
+    Position helper class.
+
+    Includes addition functions creating json data
+    from part data for easy use in REST API.
+
+    Attributes
+    ----------
+    x: float
+        X-axis position
+    y: float
+        Y-axis position
+    z: float
+        Z-axis position
+
+    """
+    def __init(self, x:float, y:float, z: float):
+        """
+        Position construction.
+
+        Parameters
+        ----------
+        x: float
+            X-axis position
+        y: float
+            Y-axis position
+        z: float
+            Z-axis position
+
+        """
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def get_json(self):
+        """
+        Convert Position into json string for use in REST API.
+
+        Returns
+        -------
+        dict
+            Json formatted string
+
+        """
+        return {
+            self.x,
+            self.y,
+            self.z
+        }
+
+
 class ImageValue:
     """
     Image Value helper class.
 
     Includes addition functions creating json data
     from part data for easy use in REST API.
-    # TODO impliment class for position
-    # TODO impliment class for dimension
 
     Attributes
     ----------
@@ -81,9 +183,9 @@ class ImageValue:
         Name of the image e.g. test001.png
     timestamp: str
         Timestamp e.g. 1516193959559
-    position: str
+    position: Position
         Position on the part where the image was taken
-    dimension: str
+    dimension: Dimension
         Dimension of the area of the part, which is on the image
     quality: str
         Quality
@@ -92,7 +194,7 @@ class ImageValue:
 
     def __init__(
             self, value: str, timestamp: str,
-            position: str, dimension: str, quality: str):
+            position: Position, dimension: Dimension, quality: str):
         """
         Image value construction.
 
@@ -129,8 +231,8 @@ class ImageValue:
         return {
             "value": self.value,
             "timestamp": self.timestamp,
-            "position": self.position,
-            "dimension": self.dimension,
+            "position": self.position.get_json(),
+            "dimension": self.dimension.get_json(),
             "quality": self.quality
         }
 
@@ -211,8 +313,6 @@ class ImageAnalysisFailure:
 
     Includes addition functions creating json data
     from part data for easy use in REST API.
-    # TODO impliment class for position
-    # TODO impliment class for dimension
 
     Attributes
     ----------
@@ -220,9 +320,9 @@ class ImageAnalysisFailure:
         Unique failure id e.g. 124355435321576
     failure: str
         Failure type id e.g. 4711
-    position: str
+    position: Position
         Position on the part where the image was taken
-    dimension: str
+    dimension: Dimension
         Dimension of the area of the part, which is on the image
     qualifying_metadata: list
         Qualifying metadata should be a key value pair array
@@ -230,7 +330,7 @@ class ImageAnalysisFailure:
     """
     def __init__(
             self, id: str, failure: str,
-            position: str, dimension: str, qualifying_metadata: list):
+            position: Position, dimension: Dimension, qualifying_metadata: list):
         """
         Image analysis failure construction.
 
@@ -240,9 +340,9 @@ class ImageAnalysisFailure:
             Unique failure id e.g. 124355435321576
         failure: str
             Failure type id e.g. 4711
-        position: str
+        position: Position
             Position on the part where the image was taken
-        dimension: str
+        dimension: Dimension
             Dimension of the area of the part, which is on the image
         qualifying_metadata: list
             Qualifying metadata should be a key value pair array
@@ -267,8 +367,8 @@ class ImageAnalysisFailure:
         return {
             "id": self.id,
             "failure": self.failure,
-            "position": self.position,
-            "dimension": self.dimension,
+            "position": self.position.get_json(),
+            "dimension": self.dimension.get_json(),
             "qualifying_metadata": self.qualifying_metadata
         }
 
