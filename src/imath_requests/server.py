@@ -5,7 +5,7 @@ Mock server for testing REST API.
 """
 
 import os
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 
 
@@ -47,7 +47,6 @@ class PartDataEndpoint(Resource):
 
     def post(self):
         json_data = request.get_json(force=True)
-        print(json_data)
         return {'data': json_data}, 200  # return data with 200 OK
 
 
