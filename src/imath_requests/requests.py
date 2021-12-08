@@ -83,7 +83,7 @@ class Dimension:
         Z-axis dimension
 
     """
-    def __init(self, x:float, y:float, z: float):
+    def __init__(self, x:float, y:float, z: float):
         """
         Dimension construction.
 
@@ -135,7 +135,7 @@ class Position:
         Z-axis position
 
     """
-    def __init(self, x:float, y:float, z: float):
+    def __init__(self, x:float, y:float, z: float):
         """
         Position construction.
 
