@@ -438,7 +438,7 @@ class ImageAnalysisData:
         	"source": self.source,
         	"value": self.value,
         	"timestamp": self.timestamp,
-        	"failures": failures_json
+        	"failures": failures_json_list
         }
 
 
