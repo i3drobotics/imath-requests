@@ -10,7 +10,22 @@ from flask_restful import Resource, Api, reqparse
 
 
 class PartDataEndpoint(Resource):
+    """
+    Part data API endpoint class.
+
+    Resource used in Flask app to mock REST API.
+
+    """
     def get(self):
+        """
+        REST API get request to return part data.
+
+        Returns
+        -------
+        tuple, int
+            part data (json), status code
+
+        """
         part_data = {
             "timestamp": 1516193959559,
             "part_id": "Part1234",
@@ -46,12 +61,36 @@ class PartDataEndpoint(Resource):
         return {'data': part_data}, 200  # return data and 200 OK code
 
     def post(self):
+        """
+        REST API post request to accept part data.
+
+        Returns
+        -------
+        tuple, int
+            part data (json), status code
+
+        """
         json_data = request.get_json(force=True)
         return {'data': json_data}, 200  # return data with 200 OK
 
 
 class ImageMetaDataEndpoint(Resource):
+    """
+    Image meta data API endpoint class.
+
+    Resource used in Flask app to mock REST API.
+
+    """
     def get(self):
+        """
+        REST API get request to return image meta data.
+
+        Returns
+        -------
+        tuple, int
+            part data (json), status code
+
+        """
         image_meta_data = {
             "part_id" : "Part1234",
             "value_id" : "Camera1",
@@ -86,13 +125,36 @@ class ImageMetaDataEndpoint(Resource):
         return {'data': image_meta_data}, 200  # return data and 200 OK code
 
     def post(self):
+        """
+        REST API post request to accept image meta data.
+
+        Returns
+        -------
+        tuple, int
+            part data (json), status code
+
+        """
         json_data = request.get_json(force=True)
-        print(json_data)
         return {'data': json_data}, 200  # return data with 200 OK
 
 
 class ImageAnalysisDataEndpoint(Resource):
+    """
+    Image analysis data API endpoint class.
+
+    Resource used in Flask app to mock REST API.
+
+    """
     def get(self):
+        """
+        REST API get request to return image analysis data.
+
+        Returns
+        -------
+        tuple, int
+            part data (json), status code
+
+        """
         image_analysis_data = {
             "part_id": "Part1234",
             "source": "Analysis System",
@@ -149,15 +211,40 @@ class ImageAnalysisDataEndpoint(Resource):
                 }
             ]
         }
-        return {'data': image_meta_data}, 200  # return data and 200 OK code
+        return {'data': image_analysis_data}, 200  # return data and 200 OK code
 
     def post(self):
+        """
+        REST API post request to accept image analysis data.
+
+        Returns
+        -------
+        tuple, int
+            part data (json), status code
+
+        """
         json_data = request.get_json(force=True)
-        print(json_data)
         return {'data': json_data}, 200  # return data with 200 OK
 
 
 def create_app(test_config=None):
+    """
+    Create Flask app
+
+    Create and configure the app to mockup server for iMath REST API.
+
+    Parameters
+    ----------
+    test_config:
+        Test config
+
+    Returns
+    -------
+    app, api
+        Flask App, Flask API
+
+    """
+
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
