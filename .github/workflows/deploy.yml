@@ -22,8 +22,8 @@ jobs:
       - name: Turnstyle
         uses: softprops/turnstyle@v1
         with:
-          # bail on running deployment if waiting for more than 2 minute
-          abort-after-seconds: 120
+          # bail on running immediately if busy
+          abort-after-seconds: 1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       # Checkout code
