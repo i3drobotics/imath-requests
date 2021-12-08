@@ -79,6 +79,62 @@
 <h2>requests.py<a class="headerlink" href="#requests-py" title="Permalink to this headline"></a></h2>
 <p>Request handelling and data structures for interacting with iMath REST API</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="imath_requests.requests.Dimension">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.requests.</span></span><span class="sig-name descname"><span class="pre">Dimension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.Dimension" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Dimension helper class.</p>
+<p>Includes addition functions creating json data
+from part data for easy use in REST API.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.Dimension.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#imath_requests.requests.Dimension.x" title="Permalink to this definition"></a></dt>
+<dd><p>X-axis dimension</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.Dimension.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#imath_requests.requests.Dimension.y" title="Permalink to this definition"></a></dt>
+<dd><p>Y-axis dimension</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.Dimension.z">
+<span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#imath_requests.requests.Dimension.z" title="Permalink to this definition"></a></dt>
+<dd><p>Z-axis dimension</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imath_requests.requests.Dimension.get_json">
+<span class="sig-name descname"><span class="pre">get_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.Dimension.get_json" title="Permalink to this definition"></a></dt>
+<dd><p>Convert Dimension into json string for use in REST API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Json formatted string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.requests.</span></span><span class="sig-name descname"><span class="pre">ImageAnalysisData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">part_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failures</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisData" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -158,13 +214,11 @@ from image meta data for easy use in REST API.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisFailure">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.requests.</span></span><span class="sig-name descname"><span class="pre">ImageAnalysisFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualifying_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.requests.</span></span><span class="sig-name descname"><span class="pre">ImageAnalysisFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#imath_requests.requests.Position" title="imath_requests.requests.Position"><span class="pre">imath_requests.requests.Position</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#imath_requests.requests.Dimension" title="imath_requests.requests.Dimension"><span class="pre">imath_requests.requests.Dimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualifying_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Image analysis failure helper class.</p>
 <p>Includes addition functions creating json data
-from part data for easy use in REST API.
-# TODO impliment class for position
-# TODO impliment class for dimension</p>
+from part data for easy use in REST API.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imath_requests.requests.ImageAnalysisFailure.id">
 <span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#imath_requests.requests.ImageAnalysisFailure.id" title="Permalink to this definition"></a></dt>
@@ -193,7 +247,7 @@ from part data for easy use in REST API.
 <dd><p>Position on the part where the image was taken</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference internal" href="#imath_requests.requests.Position" title="imath_requests.requests.Position">Position</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -204,7 +258,7 @@ from part data for easy use in REST API.
 <dd><p>Dimension of the area of the part, which is on the image</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference internal" href="#imath_requests.requests.Dimension" title="imath_requests.requests.Dimension">Dimension</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -316,13 +370,11 @@ from image meta data for easy use in REST API.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="imath_requests.requests.ImageValue">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.requests.</span></span><span class="sig-name descname"><span class="pre">ImageValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.ImageValue" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.requests.</span></span><span class="sig-name descname"><span class="pre">ImageValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#imath_requests.requests.Position" title="imath_requests.requests.Position"><span class="pre">imath_requests.requests.Position</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#imath_requests.requests.Dimension" title="imath_requests.requests.Dimension"><span class="pre">imath_requests.requests.Dimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.ImageValue" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Image Value helper class.</p>
 <p>Includes addition functions creating json data
-from part data for easy use in REST API.
-# TODO impliment class for position
-# TODO impliment class for dimension</p>
+from part data for easy use in REST API.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imath_requests.requests.ImageValue.value">
 <span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#imath_requests.requests.ImageValue.value" title="Permalink to this definition"></a></dt>
@@ -351,7 +403,7 @@ from part data for easy use in REST API.
 <dd><p>Position on the part where the image was taken</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference internal" href="#imath_requests.requests.Position" title="imath_requests.requests.Position">Position</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -362,7 +414,7 @@ from part data for easy use in REST API.
 <dd><p>Dimension of the area of the part, which is on the image</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><a class="reference internal" href="#imath_requests.requests.Dimension" title="imath_requests.requests.Dimension">Dimension</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -449,6 +501,62 @@ data from part data for easy use in REST API.</p>
 <dt class="sig sig-object py" id="imath_requests.requests.PartData.get_json">
 <span class="sig-name descname"><span class="pre">get_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#imath_requests.requests.PartData.get_json" title="Permalink to this definition"></a></dt>
 <dd><p>Convert PartData into json string for use in REST API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Json formatted string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imath_requests.requests.Position">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.requests.</span></span><span class="sig-name descname"><span class="pre">Position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.Position" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Position helper class.</p>
+<p>Includes addition functions creating json data
+from part data for easy use in REST API.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.Position.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#imath_requests.requests.Position.x" title="Permalink to this definition"></a></dt>
+<dd><p>X-axis position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.Position.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#imath_requests.requests.Position.y" title="Permalink to this definition"></a></dt>
+<dd><p>Y-axis position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.requests.Position.z">
+<span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#imath_requests.requests.Position.z" title="Permalink to this definition"></a></dt>
+<dd><p>Z-axis position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imath_requests.requests.Position.get_json">
+<span class="sig-name descname"><span class="pre">get_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.requests.Position.get_json" title="Permalink to this definition"></a></dt>
+<dd><p>Convert Position into json string for use in REST API.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Json formatted string</p>
