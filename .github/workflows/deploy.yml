@@ -3,9 +3,10 @@ name: Deployment
 # Only trigger on main branch pull request close events
 # used to deploy code after merging
 # Versioning is automatically generated when merging, this is created by detecting the branch prefix:
-# - 'major/' prefix for major release (e.g. N.x.x)
-# - 'minor/' prefix for minor release (e.g. x.N.x)
-# - no prefix for patch release (e.g. x.x.N)
+# - 'major' prefix for major release (e.g. N.x.x)
+# - 'minor' or 'feature' prefix for minor release (e.g. x.N.x)
+# - 'patch' or 'bugfix' prefix for patch release (e.g. x.x.N)
+# - no prefix for prepatch release (e.g. x.x.x-N)
 on:
   pull_request:
     branches: [ main ]
@@ -52,9 +53,9 @@ jobs:
           releases-only: true  # All relevant tags have a GitHub release for them.
         id: latest-tag  # The step ID to refer to later.
       # Get release type
-      - name: Set default release type # Set default to patch if no prefix is recognised
+      - name: Set default release type # Set default to prepatch if no prefix is recognised
         shell: bash
-        run: echo "RELEASE_TYPE=patch" >> $GITHUB_ENV
+        run: echo "RELEASE_TYPE=prepatch" >> $GITHUB_ENV
       - name: Release type is major # If contains prefix major/xxx
         if: startsWith( github.head_ref, 'major')
         shell: bash
