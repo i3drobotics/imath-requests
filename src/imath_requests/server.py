@@ -7,6 +7,7 @@ Mock server for testing REST API.
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 
+
 class ImageMetaDataEndpoint(Resource):
     def get(self):
         image_meta_data = {
@@ -42,11 +43,33 @@ class ImageMetaDataEndpoint(Resource):
         }
         return {'data': image_meta_data}, 200  # return data and 200 OK code
 
+    def post(self):
+        json_data = request.get_json(force=True)
+        print(json_data)
+        return {'data': json_data}, 200  # return data with 200 OK
+
+
 class Server:
     def __init__(self):
         self.app = Flask(__name__)
         self.api = Api(self.app)
-        self.api.add_resource(ImageMetaDataEndpoint, '/image_meta_data')  # '/image_meta_data' is our entry point
+
+        @self.app.route('/')
+        def index():
+            page = """ 
+                <h1>Welcome to iMath Requests test server</h1>
+                <h3>The following API endpoints are available:</h3>
+                <ul>
+                    <li>/image_meta_data</li>
+                </ul>
+            """
+            return page
+
+        self.api.add_resource(ImageMetaDataEndpoint, '/image_meta_data')
 
     def run(self):
         self.app.run()
+
+if __name__ == "__main__":
+    server = Server()
+    server.run()
