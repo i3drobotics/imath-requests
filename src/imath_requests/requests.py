@@ -178,9 +178,7 @@ class ImageMetaData:
         self.part_id = part_id
         self.value_id = value_id
         self.source = source
-        self.values = []
-        for value in values:
-            self.values.append(value.get_json())
+        self.values = values
         self.qualifying_metadata = qualifying_metadata
 
     def get_json(self) -> dict:
@@ -193,23 +191,89 @@ class ImageMetaData:
             Json formatted string
 
         """
+        values_json_list = []
+        for value in self.values:
+            values_json_list.append(value.get_json())
         return {
             "part_id": self.part_id,
             "value_id": self.value_id,
             "source": self.source,
-            "values": self.values,
+            "values": values_json_list,
             "qualifying_metadata": self.qualifying_metadata
         }
 
+
+class ImageAnalysisFailure:
+    """
+    Image analysis failure helper class.
+
+    Includes addition functions creating json data
+    from part data for easy use in REST API.
+
+    Attributes
+    ----------
+    id: str
+        Unique failure id e.g. 124355435321576
+    failure: str
+        Failure type id e.g. 4711
+    position: str
+        Position on the part where the image was taken
+    dimension: str
+        Dimension of the area of the part, which is on the image
+    qualifying_metadata: list
+        Qualifying metadata should be a key value pair array
+
+    """
+    def __init__(
+            self, id: str, failure: str,
+            position: str, dimension: str, qualifying_metadata: list):
+        """
+        Image analysis failure construction.
+
+        Parameters
+        ----------
+        id: str
+            Unique failure id e.g. 124355435321576
+        failure: str
+            Failure type id e.g. 4711
+        position: str
+            Position on the part where the image was taken
+        dimension: str
+            Dimension of the area of the part, which is on the image
+        qualifying_metadata: list
+            Qualifying metadata should be a key value pair array
+
+        """
+        self.id = id
+        self.failure = failure
+        self.position = position
+        self.dimension = dimension
+        self.qualifying_metadata = qualifying_metadata
+
+    def get_json(self) -> dict:
+        """
+        Convert ImageAnalysisFailure into json string for use in REST API.
+
+        Returns
+        -------
+        dict
+            Json formatted string
+
+        """
+        return {
+            "id": self.id,
+            "failure": self.failure,
+            "position": self.position,
+            "dimension": self.dimension,
+            "qualifying_metadata": self.qualifying_metadata
+        }
 
 class ImageAnalysisData:
     """
     Image meta data helper class.
 
-    (Not yet implimented)
     Includes addition functions creating json data
     from image meta data for easy use in REST API.
-    TODO finish implimenting image analysis data.
 
     Attributes
     ----------
@@ -222,7 +286,7 @@ class ImageAnalysisData:
     timestamp : str
         Timestamp e.g. 1516193959559
     failures: list
-        TODO impliment
+        list of ImageAnalysisFailure
 
     """
 
@@ -232,8 +296,6 @@ class ImageAnalysisData:
         """
         Image Meta Data construction.
 
-        (Not yet implimented)
-
         Parameters
         ----------
         part_id : str
@@ -241,40 +303,22 @@ class ImageAnalysisData:
         source : str
             Data source e.g. I3DR_DESKTOP_ABC123
         value: str
-            List of ImageValues
+            Name of the image (NOT ImageValue)
         timestamp : str
             Timestamp e.g. 1516193959559
         failures: list
-            TODO impliment
+            list of ImageAnalysisFailure
 
         """
-        raise NotImplementedError
-        # self.part_id = part_id  # Unique part ID e.g. Part1234
-        # self.source = source  # Data source e.g. I3DR_DESKTOP_ABC123
-        # self.value = value  # name of the image (NOT ImageValue)
-        # self.timestamp = timestamp
-        # # Values should be a list of ImageValues
-        # self.values = []
-        # for value in failures:
-        #     self.values.append(value.get_json())
-        # Qualifying metadata should be a key value pair array e.g.
-        # qualifying_metadata = [
-        # 	{
-        # 		"key": "key1",
-        # 		"value": "value1"
-        # 	},
-        # 	{
-        # 		"key": "key2",
-        # 		"value": "value2"
-        # 	}
-        # ]
-        # self.qualifying_metadata = qualifying_metadata
+        self.part_id = part_id
+        self.source = source
+        self.value = value 
+        self.timestamp = timestamp
+        self.failures = failures
 
     def get_json(self) -> dict:
         """
         Convert ImageAnalysisData into json string for use in REST API.
-
-        (Not yet implimented)
 
         Returns
         -------
@@ -282,70 +326,17 @@ class ImageAnalysisData:
             Json formatted string
 
         """
-        raise NotImplementedError
-        # json = {
-        # 	"part_id": self.part_id,
-        # 	"value_id": self.value_id,
-        # 	"source": self.source,
-        # 	"values": self.values,
-        # 	"qualifying_metadata": self.qualifying_metadata
-        # }
+        failures_json_list = []
+        for failure in self.failures:
+            failures_json_list.append(failure.get_json())
+        json = {
+        	"part_id": self.part_id,
+        	"source": self.source,
+        	"value": self.value,
+        	"timestamp": self.timestamp,
+        	"failures": failures_json
+        }
 
-
-# Image analysis example data
-# {
-#     "part_id": "Part1234",
-#     "source": "Analysis System",
-#     "value": "Part1234_1.1_2.2_1.jpg",
-#     "timestamp": "1516193959559",
-#     "failures": [
-#         {
-#             "id": 124355435321576
-#             "failure": "4711",
-#             "position": [
-#              44.2,
-#              17.4
-#             ],
-#             "dimension": [
-#                 Page 8 of 10
-#                 5.2,
-#                 1
-#             ],
-#             "qualifying_metadata": [
-#                 {
-#                     "key": "xxx",
-#                     "value": "1"
-#                 },
-#                 {
-#                     "key": "yyy",
-#                     "value": "2"
-#                 }
-#             ]
-#         },
-#         {
-#             "id": 124355435321578
-#             "failure": "4712",
-#             "position": [
-#                 33.2,
-#                 3
-#             ],
-#             "dimension": [
-#                 2.3,
-#                 1.1
-#             ],
-#             "qualifying_metadata": [
-#                 {
-#                     "key": "xxx",
-#                     "value": "1"
-#                 },
-#                 {
-#                     "key": "yyy",
-#                     "value": "2"
-#                 }
-#             ]
-#         }
-#     ]
-# }
 
 # TODO add REST API post functions
 # # Create a new resource
