@@ -44,6 +44,7 @@
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requests-py">requests.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-py">server.py</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -567,6 +568,154 @@ from part data for easy use in REST API.</p>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+</section>
+<span class="target" id="module-imath_requests.server"></span><section id="server-py">
+<h2>server.py<a class="headerlink" href="#server-py" title="Permalink to this headline"></a></h2>
+<p>Mock server for testing REST API.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="imath_requests.server.ImageAnalysisDataEndpoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.server.</span></span><span class="sig-name descname"><span class="pre">ImageAnalysisDataEndpoint</span></span><a class="headerlink" href="#imath_requests.server.ImageAnalysisDataEndpoint" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
+<p>Image analysis data API endpoint class.</p>
+<p>Resource used in Flask app to mock REST API.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imath_requests.server.ImageAnalysisDataEndpoint.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.server.ImageAnalysisDataEndpoint.get" title="Permalink to this definition"></a></dt>
+<dd><p>REST API get request to return image analysis data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>part data (json), status code</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple, int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.server.ImageAnalysisDataEndpoint.methods">
+<span class="sig-name descname"><span class="pre">methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">t.List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'GET',</span> <span class="pre">'POST'}</span></em><a class="headerlink" href="#imath_requests.server.ImageAnalysisDataEndpoint.methods" title="Permalink to this definition"></a></dt>
+<dd><p>A list of methods this view can handle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imath_requests.server.ImageAnalysisDataEndpoint.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.server.ImageAnalysisDataEndpoint.post" title="Permalink to this definition"></a></dt>
+<dd><p>REST API post request to accept image analysis data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>part data (json), status code</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple, int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imath_requests.server.ImageMetaDataEndpoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.server.</span></span><span class="sig-name descname"><span class="pre">ImageMetaDataEndpoint</span></span><a class="headerlink" href="#imath_requests.server.ImageMetaDataEndpoint" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
+<p>Image meta data API endpoint class.</p>
+<p>Resource used in Flask app to mock REST API.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imath_requests.server.ImageMetaDataEndpoint.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.server.ImageMetaDataEndpoint.get" title="Permalink to this definition"></a></dt>
+<dd><p>REST API get request to return image meta data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>part data (json), status code</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple, int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.server.ImageMetaDataEndpoint.methods">
+<span class="sig-name descname"><span class="pre">methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">t.List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'GET',</span> <span class="pre">'POST'}</span></em><a class="headerlink" href="#imath_requests.server.ImageMetaDataEndpoint.methods" title="Permalink to this definition"></a></dt>
+<dd><p>A list of methods this view can handle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imath_requests.server.ImageMetaDataEndpoint.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.server.ImageMetaDataEndpoint.post" title="Permalink to this definition"></a></dt>
+<dd><p>REST API post request to accept image meta data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>part data (json), status code</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple, int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imath_requests.server.PartDataEndpoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imath_requests.server.</span></span><span class="sig-name descname"><span class="pre">PartDataEndpoint</span></span><a class="headerlink" href="#imath_requests.server.PartDataEndpoint" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
+<p>Part data API endpoint class.</p>
+<p>Resource used in Flask app to mock REST API.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imath_requests.server.PartDataEndpoint.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.server.PartDataEndpoint.get" title="Permalink to this definition"></a></dt>
+<dd><p>REST API get request to return part data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>part data (json), status code</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple, int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imath_requests.server.PartDataEndpoint.methods">
+<span class="sig-name descname"><span class="pre">methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">t.List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'GET',</span> <span class="pre">'POST'}</span></em><a class="headerlink" href="#imath_requests.server.PartDataEndpoint.methods" title="Permalink to this definition"></a></dt>
+<dd><p>A list of methods this view can handle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imath_requests.server.PartDataEndpoint.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.server.PartDataEndpoint.post" title="Permalink to this definition"></a></dt>
+<dd><p>REST API post request to accept part data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>part data (json), status code</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple, int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imath_requests.server.create_app">
+<span class="sig-prename descclassname"><span class="pre">imath_requests.server.</span></span><span class="sig-name descname"><span class="pre">create_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imath_requests.server.create_app" title="Permalink to this definition"></a></dt>
+<dd><p>Create Flask app</p>
+<p>Create and configure the app to mockup server for iMath REST API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>test_config</strong> – Test config</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flask App, Flask API</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>app, api</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
