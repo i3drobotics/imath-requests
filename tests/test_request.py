@@ -9,6 +9,7 @@ from imath_requests.request import PartData, ImageAnalysisData, ImageAnalysisFai
 from imath_requests.request import ImageValue, ImageMetaData
 from imath_requests.request import Position, Dimension
 from imath_requests.server import create_app
+import requests
 import multiprocessing
 
 
