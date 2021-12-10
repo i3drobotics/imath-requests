@@ -20,7 +20,7 @@ class TestPartDataEndpoint(unittest.TestCase):
         self.client = app.test_client()
 
     def test_part_data_get(self):
-        self.client.get('/part_data', follow_redirects=True)
+        self.client.get('/api/part_data', follow_redirects=True)
 
     def test_part_data_post(self):
         part_data = {
