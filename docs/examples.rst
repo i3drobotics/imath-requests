@@ -7,4 +7,4 @@ Import PartData
 
 .. code-block:: python
 
-    from imath_requests.requests import PartData
+    from imath_request.requests import PartData
