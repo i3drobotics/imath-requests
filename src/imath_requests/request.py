@@ -1,5 +1,5 @@
 """
-requests.py
+request.py
 ====================================
 Request handelling and data structures for interacting with iMath REST API
 """
