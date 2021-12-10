@@ -4,6 +4,8 @@ requests.py
 Request handelling and data structures for interacting with iMath REST API
 """
 
+import requests
+
 
 class PartData:
     """
@@ -111,11 +113,11 @@ class Dimension:
             Json formatted string
 
         """
-        return {
+        return [
             self.x,
             self.y,
             self.z
-        }
+        ]
 
 
 class Position:
@@ -163,11 +165,11 @@ class Position:
             Json formatted string
 
         """
-        return {
+        return [
             self.x,
             self.y,
             self.z
-        }
+        ]
 
 
 class ImageValue:
@@ -433,7 +435,7 @@ class ImageAnalysisData:
         failures_json_list = []
         for failure in self.failures:
             failures_json_list.append(failure.get_json())
-        json = {
+        return {
         	"part_id": self.part_id,
         	"source": self.source,
         	"value": self.value,
@@ -441,9 +443,65 @@ class ImageAnalysisData:
         	"failures": failures_json_list
         }
 
+    @staticmethod
+    def from_json(json: str) -> 'ImageAnalysisData':
+        part_id = json['part_id']
+        source = json['source']
+        value = json['value']
+        timestamp = json['timestamp']
+        failures = []
+        for failure in json['failures']:
+            position = Position(
+                failure['position'][0],
+                failure['position'][1],
+                failure['position'][2])
+            dimension = Dimension(
+                failure['dimension'][0],
+                failure['dimension'][1],
+                failure['dimension'][2])
+            failures.append(
+                ImageAnalysisFailure(
+                    failure['id'], failure['failure'], position,
+                    dimension, failure['qualifying_metadata']
+                )
+            )
+        return ImageAnalysisData(
+            part_id, source, value, timestamp, failures)
 
-# TODO add REST API post functions
-# # Create a new resource
-# response = requests.post('https://httpbin.org/post', data = {'key':'value'})
-# # Update an existing resource
-# requests.put('https://httpbin.org/put', data = {'key':'value'})
+    def post(self, url: str) -> None:
+        data = self.get_json()
+        response = requests.post(url, json = data)
+        return response
+
+    @staticmethod
+    def get(url: str) -> 'ImageAnalysisData':
+        json = requests.get(url).json()['data']
+        return ImageAnalysisData.from_json(json)
+
+if __name__ == "__main__":
+    url = 'http://127.0.0.1:5000/api/image_analysis_data'
+    # image_analysis_data = ImageAnalysisData.get(url)
+    qualifying_metadata = [
+        {
+            "key": "xxx",
+            "value": "1"
+        },
+        {
+            "key": "yyy",
+            "value": "2"
+        }
+    ]
+    image_analysis_failure = ImageAnalysisFailure(
+        "124355435321576", "4711", Position(44.2, 17.4, 0.0),
+        Dimension(5.2, 1.0, 0.0), qualifying_metadata
+    )
+    image_analysis_failure_list = [
+        image_analysis_failure,
+        image_analysis_failure
+    ]
+    image_analysis_data = ImageAnalysisData(
+        "Part1234", "I3DR_DESKTOP_ABC123",
+        "test001.png", "1516193959559", image_analysis_failure_list
+    )
+    resp = image_analysis_data.post(url)
+    print(resp)

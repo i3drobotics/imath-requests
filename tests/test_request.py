@@ -1,13 +1,16 @@
 """
-test_requests.py
+test_request.py
 ====================================
-Unit testing for requests module
+Unit testing for request module
 """
 
 import unittest
-from imath_requests.requests import PartData, ImageAnalysisData, ImageAnalysisFailure
-from imath_requests.requests import ImageValue, ImageMetaData
-from imath_requests.requests import Position, Dimension
+from imath_requests.request import PartData, ImageAnalysisData, ImageAnalysisFailure
+from imath_requests.request import ImageValue, ImageMetaData
+from imath_requests.request import Position, Dimension
+from imath_requests.server import create_app
+import requests
+import multiprocessing
 
 
 class TestPosition(unittest.TestCase):
@@ -313,6 +316,60 @@ class TestRequestsImageAnalysisData(unittest.TestCase):
         )
         image_analysis_data.get_json()
         # TODO add image analysis data json generation test
+
+
+class TestPartDataEndpoint(unittest.TestCase):
+    """
+    Unit testing part data in requests with mock server.
+
+    """
+    def setUp(self):
+        self.server_name = "127.0.0.1:5000"
+        self.app, self.api = create_app({'SERVER_NAME': self.server_name})
+        self.app_thread = multiprocessing.Process(target=self.app.run)
+        self.app_thread.start()
+        # poll server to check it's ready for testing
+        while True:
+            try:
+                requests.get("http://{}/".format(self.server_name), timeout=0.5)
+                return
+            except requests.exceptions.ConnectionError:
+                pass
+
+    def tearDown(self):
+        self.app_thread.terminate()
+
+    def test_part_data_get(self):
+        url = "http://{}/api/image_analysis_data".format(self.server_name)
+        image_analysis_data = ImageAnalysisData.get(url)
+        self.assertIsNotNone(image_analysis_data)
+
+    def test_part_data_post(self):
+        url = "http://{}/api/image_analysis_data".format(self.server_name)
+        qualifying_metadata = [
+            {
+                "key": "xxx",
+                "value": "1"
+            },
+            {
+                "key": "yyy",
+                "value": "2"
+            }
+        ]
+        image_analysis_failure = ImageAnalysisFailure(
+            "124355435321576", "4711", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), qualifying_metadata
+        )
+        image_analysis_failure_list = [
+            image_analysis_failure,
+            image_analysis_failure
+        ]
+        image_analysis_data = ImageAnalysisData(
+            "Part1234", "I3DR_DESKTOP_ABC123",
+            "test001.png", "1516193959559", image_analysis_failure_list
+        )
+        resp = image_analysis_data.post(url)
+        self.assertEqual(resp.status_code, 200)
 
 
 if __name__ == '__main__':
