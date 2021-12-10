@@ -40,7 +40,7 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        'flask', 'flask-restful'
+        'flask', 'flask-restful', 'requests'
     ],
     extras_require={
         'dev': ['check-manifest'],
