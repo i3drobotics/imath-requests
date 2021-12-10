@@ -471,7 +471,7 @@ class ImageAnalysisData:
     def post(self, url: str) -> None:
         data = self.get_json()
         response = requests.post(url, json = data)
-        print(response)
+        return response
 
     @staticmethod
     def get(url: str) -> 'ImageAnalysisData':
@@ -503,4 +503,5 @@ if __name__ == "__main__":
         "Part1234", "I3DR_DESKTOP_ABC123",
         "test001.png", "1516193959559", image_analysis_failure_list
     )
-    image_analysis_data.post(url)
+    resp = image_analysis_data.post(url)
+    print(resp)
