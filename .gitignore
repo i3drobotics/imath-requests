@@ -141,3 +141,6 @@ docs/_build/*
 docs/_build/html/*
 # Include .nojekyll for github pages
 !docs/_build/**/.nojekyll
+
+# vscode
+.vscode/launch.json
