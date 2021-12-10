@@ -1,13 +1,13 @@
 """
-test_requests.py
+test_request.py
 ====================================
-Unit testing for requests module
+Unit testing for request module
 """
 
 import unittest
-from imath_requests.requests import PartData, ImageAnalysisData, ImageAnalysisFailure
-from imath_requests.requests import ImageValue, ImageMetaData
-from imath_requests.requests import Position, Dimension
+from imath_requests.request import PartData, ImageAnalysisData, ImageAnalysisFailure
+from imath_requests.request import ImageValue, ImageMetaData
+from imath_requests.request import Position, Dimension
 
 
 class TestPosition(unittest.TestCase):
