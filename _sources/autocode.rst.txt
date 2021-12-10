@@ -1,7 +1,7 @@
 *******
 Module
 *******
-.. automodule:: imath_requests.requests
+.. automodule:: imath_requests.request
     :members:
     :undoc-members:
     :show-inheritance:
