@@ -4,6 +4,8 @@ requests.py
 Request handelling and data structures for interacting with iMath REST API
 """
 
+import requests
+
 
 class PartData:
     """
@@ -441,9 +443,16 @@ class ImageAnalysisData:
         	"failures": failures_json_list
         }
 
+    def post(self, url) -> None:
+        raise NotImplementedError
+        response = requests.post('https://httpbin.org/post', data = {'key':'value'})
 
-# TODO add REST API post functions
-# # Create a new resource
-# response = requests.post('https://httpbin.org/post', data = {'key':'value'})
-# # Update an existing resource
-# requests.put('https://httpbin.org/put', data = {'key':'value'})
+    @staticmethod
+    def get(url) -> ImageAnalysisData:
+        raise NotImplementedError
+        response = requests.get('https://httpbin.org/post')
+
+if __name__ == "__main__":
+    # image_analysis_data_url = "127"
+    image_analysis_data = ImageAnalysisData.get()
+    image_analysis_data.put()
