@@ -113,11 +113,11 @@ class Dimension:
             Json formatted string
 
         """
-        return {
+        return [
             self.x,
             self.y,
             self.z
-        }
+        ]
 
 
 class Position:
@@ -165,11 +165,11 @@ class Position:
             Json formatted string
 
         """
-        return {
+        return [
             self.x,
             self.y,
             self.z
-        }
+        ]
 
 
 class ImageValue:
@@ -470,7 +470,7 @@ class ImageAnalysisData:
 
     def post(self, url: str) -> None:
         data = self.get_json()
-        response = requests.post(url, data = data)
+        response = requests.post(url, json = data)
         print(response)
 
     @staticmethod
@@ -480,5 +480,27 @@ class ImageAnalysisData:
 
 if __name__ == "__main__":
     url = 'http://127.0.0.1:5000/api/image_analysis_data'
-    image_analysis_data = ImageAnalysisData.get(url)
+    # image_analysis_data = ImageAnalysisData.get(url)
+    qualifying_metadata = [
+        {
+            "key": "xxx",
+            "value": "1"
+        },
+        {
+            "key": "yyy",
+            "value": "2"
+        }
+    ]
+    image_analysis_failure = ImageAnalysisFailure(
+        "124355435321576", "4711", Position(44.2, 17.4, 0.0),
+        Dimension(5.2, 1.0, 0.0), qualifying_metadata
+    )
+    image_analysis_failure_list = [
+        image_analysis_failure,
+        image_analysis_failure
+    ]
+    image_analysis_data = ImageAnalysisData(
+        "Part1234", "I3DR_DESKTOP_ABC123",
+        "test001.png", "1516193959559", image_analysis_failure_list
+    )
     image_analysis_data.post(url)
