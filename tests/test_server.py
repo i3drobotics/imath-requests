@@ -55,4 +55,4 @@ class TestPartDataEndpoint(unittest.TestCase):
                 }
             ]
         }
-        self.client.post('/part_data', data=part_data, follow_redirects=True)
+        self.client.post('/api/part_data', data=part_data, follow_redirects=True)
