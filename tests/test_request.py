@@ -327,6 +327,13 @@ class TestPartDataEndpoint(unittest.TestCase):
         self.app, self.api = create_app({'SERVER_NAME': self.server_name})
         self.app_thread = multiprocessing.Process(target=self.app.run)
         self.app_thread.start()
+        # poll server to check it's ready for testing
+        while True:
+            try:
+                requests.get("http://{}/".format(self.server_name), timeout=0.5)
+                return
+            except requests.exceptions.ConnectionError:
+                pass
 
     def tearDown(self):
         self.app_thread.terminate()
