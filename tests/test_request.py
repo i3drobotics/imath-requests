@@ -324,6 +324,8 @@ class TestPartDataEndpoint(unittest.TestCase):
     """
     def setUp(self):
         app, api = create_app({'TESTING': True})
+        self.app_context = self.app.test_request_context()                      
+        self.app_context.push()
         self.client = app.test_client()
 
     def test_part_data_get(self):
