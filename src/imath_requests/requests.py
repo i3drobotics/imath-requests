@@ -444,15 +444,16 @@ class ImageAnalysisData:
         }
 
     def post(self, url) -> None:
-        raise NotImplementedError
-        response = requests.post('https://httpbin.org/post', data = {'key':'value'})
+        data = self.get_json()
+        response = requests.post(url, data = data)
+        print(response)
 
     @staticmethod
-    def get(url) -> ImageAnalysisData:
-        raise NotImplementedError
-        response = requests.get('https://httpbin.org/post')
+    def get(url) -> 'ImageAnalysisData':
+        response = requests.get(url)
+        print(response)
 
 if __name__ == "__main__":
-    # image_analysis_data_url = "127"
-    image_analysis_data = ImageAnalysisData.get()
-    image_analysis_data.put()
+    url = 'http://127.0.0.1:5000/api/image_analysis_data'
+    image_analysis_data = ImageAnalysisData.get(url)
+    image_analysis_data.put(url)

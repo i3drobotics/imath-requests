@@ -280,9 +280,9 @@ def create_app(test_config=None):
         """
         return page
 
-    api.add_resource(PartDataEndpoint, '/part_data')
-    api.add_resource(ImageMetaDataEndpoint, '/image_meta_data')
-    api.add_resource(ImageAnalysisDataEndpoint, '/image_analysis_data')
+    api.add_resource(PartDataEndpoint, '/api/part_data')
+    api.add_resource(ImageMetaDataEndpoint, '/api/image_meta_data')
+    api.add_resource(ImageAnalysisDataEndpoint, '/api/image_analysis_data')
 
     return app, api
 
