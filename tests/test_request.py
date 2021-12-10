@@ -8,6 +8,8 @@ import unittest
 from imath_requests.request import PartData, ImageAnalysisData, ImageAnalysisFailure
 from imath_requests.request import ImageValue, ImageMetaData
 from imath_requests.request import Position, Dimension
+from imath_requests.server import create_app
+from flask import url_for
 
 
 class TestPosition(unittest.TestCase):
@@ -313,6 +315,46 @@ class TestRequestsImageAnalysisData(unittest.TestCase):
         )
         image_analysis_data.get_json()
         # TODO add image analysis data json generation test
+
+
+class TestPartDataEndpoint(unittest.TestCase):
+    """
+    Unit testing part data in requests with mock server.
+
+    """
+    def setUp(self):
+        app, api = create_app({'TESTING': True})
+        self.client = app.test_client()
+
+    def test_part_data_get(self):
+        url = url_for('api/image_analysis_data', follow_redirects=True)
+        image_analysis_data = ImageAnalysisData.get(url)
+
+    def test_part_data_post(self):
+        url = url_for('api/image_analysis_data', follow_redirects=True)
+        qualifying_metadata = [
+            {
+                "key": "xxx",
+                "value": "1"
+            },
+            {
+                "key": "yyy",
+                "value": "2"
+            }
+        ]
+        image_analysis_failure = ImageAnalysisFailure(
+            "124355435321576", "4711", Position(44.2, 17.4, 0.0),
+            Dimension(5.2, 1.0, 0.0), qualifying_metadata
+        )
+        image_analysis_failure_list = [
+            image_analysis_failure,
+            image_analysis_failure
+        ]
+        image_analysis_data = ImageAnalysisData(
+            "Part1234", "I3DR_DESKTOP_ABC123",
+            "test001.png", "1516193959559", image_analysis_failure_list
+        )
+        image_analysis_data.post(url)
 
 
 if __name__ == '__main__':
