@@ -5,7 +5,7 @@ Mock server for testing REST API.
 """
 
 import os
-from flask import Flask, request
+from flask import Flask, request, json, Response
 from flask_restful import Resource, Api, reqparse
 
 
@@ -70,7 +70,8 @@ class PartDataEndpoint(Resource):
             part data (json), status code
 
         """
-        json_data = request.get_json(force=True)
+        json_data = request.json
+        # TODO validate json data
         return {'data': json_data}, 200  # return data with 200 OK
 
 
@@ -134,7 +135,8 @@ class ImageMetaDataEndpoint(Resource):
             part data (json), status code
 
         """
-        json_data = request.get_json(force=True)
+        json_data = request.json
+        # TODO validate json data
         return {'data': json_data}, 200  # return data with 200 OK
 
 
@@ -223,7 +225,9 @@ class ImageAnalysisDataEndpoint(Resource):
             part data (json), status code
 
         """
-        json_data = request.get_json(force=True)
+        json_data = request.json
+        print(json_data)
+        # TODO validate json data
         return {'data': json_data}, 200  # return data with 200 OK
 
 
