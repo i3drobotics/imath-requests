@@ -86,13 +86,16 @@ class TestPartDataEndpoint(unittest.TestCase):
     """
     def setUp(self):
         self.server_name = "127.0.0.1:5000"
+        self.server_username = "test"
+        self.server_password = "test"
         self.app, self.api = create_app({'SERVER_NAME': self.server_name})
         self.app_thread = multiprocessing.Process(target=self.app.run)
         self.app_thread.start()
         # poll server to check it's ready for testing
         while True:
             try:
-                requests.get("http://{}/".format(self.server_name), timeout=0.5)
+                requests.get(
+                    "http://{}/".format(self.server_name), timeout=0.5)
                 return
             except requests.exceptions.ConnectionError:
                 pass
@@ -101,12 +104,13 @@ class TestPartDataEndpoint(unittest.TestCase):
         self.app_thread.terminate()
 
     def test_part_data_get(self):
-        url = "http://{}/part".format(self.server_name)
-        image_analysis_data = PartData.get(url)
+        image_analysis_data = PartData.get(
+            self.server_name,
+            self.server_username,
+            self.server_password)
         self.assertIsNotNone(image_analysis_data)
 
     def test_part_data_post(self):
-        url = "http://{}/part".format(self.server_name)
         property_list = [
             PartProperty("Steel grade", "Grade01"),
             PartProperty("Heat number", "C1234566"),
@@ -117,7 +121,10 @@ class TestPartDataEndpoint(unittest.TestCase):
         ]
         part_data = PartData(
             "1516193959559", "Part1234", "I3DR_DESKTOP_ABC123", property_list)
-        resp = part_data.post(url)
+        resp = part_data.post(
+            self.server_name,
+            self.server_username,
+            self.server_password)
         self.assertEqual(resp.status_code, 200)
 
 
