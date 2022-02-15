@@ -104,11 +104,11 @@ class TestPartDataEndpoint(unittest.TestCase):
         self.app_thread.terminate()
 
     def test_part_data_get(self):
-        image_analysis_data = PartData.get(
+        part_data = PartData.get(
             self.server_name,
             self.server_username,
             self.server_password)
-        self.assertIsNotNone(image_analysis_data)
+        self.assertIsNotNone(part_data)
 
     def test_part_data_post(self):
         property_list = [
@@ -125,7 +125,7 @@ class TestPartDataEndpoint(unittest.TestCase):
             self.server_name,
             self.server_username,
             self.server_password)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 201)
 
 
 if __name__ == '__main__':
