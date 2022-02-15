@@ -5,8 +5,7 @@ Unit testing for request module
 """
 
 import unittest
-from imath_requests.request import PartData, ImageAnalysisData, ImageAnalysisFailure, PartProperty
-from imath_requests.request import ImageValue, ImageMetaData
+from imath_requests.request import PartData, PartProperty
 from imath_requests.request import Position, Dimension
 from imath_requests.server import create_app
 import requests
