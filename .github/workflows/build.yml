@@ -7,15 +7,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       # Checkout code
       - uses: actions/checkout@v2
       # Setup python
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
-     - name: Install Tox
+      - name: Install Tox
         run: pip install tox
       # Build & Test module with Tox
       - name: Run Tox
