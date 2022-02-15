@@ -22,7 +22,7 @@ class TestPosition(unittest.TestCase):
 
     def test_position_json(self):
         position = Position(44.2, 17.4, 0.0)
-        position_json = position.get_json()
+        position_json = position.to_json()
         # TODO add position json generation test
 
 
@@ -36,7 +36,7 @@ class TestDimension(unittest.TestCase):
 
     def test_dimension_json(self):
         dimension = Dimension(5.2, 1.0, 0.0)
-        dimension_json = dimension.get_json()
+        dimension_json = dimension.to_json()
         # TODO add dimension json generation test
 
 
@@ -75,7 +75,7 @@ class TestRequestsPartData(unittest.TestCase):
         ]
         part_data = PartData(
             "1516193959559", "Part1234", "I3DR_DESKTOP_ABC123", property_list)
-        part_data.get_json()
+        part_data.to_json()
         # TODO add part data json generation test
 
 
