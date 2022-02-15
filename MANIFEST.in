@@ -3,3 +3,4 @@ include release.md
 include version.template
 include LICENSE
 recursive-include tests test*.py
+include *.txt
