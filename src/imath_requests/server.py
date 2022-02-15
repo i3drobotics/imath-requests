@@ -58,7 +58,7 @@ class PartDataEndpoint(Resource):
                 }
             ]
         }
-        return {'data': part_data}, 200  # return data and 200 OK code
+        return part_data, 200  # return data and 200 OK code
 
     def post(self):
         """
@@ -72,7 +72,8 @@ class PartDataEndpoint(Resource):
         """
         json_data = request.json
         # TODO validate json data
-        return {'data': json_data}, 200  # return data with 200 OK
+        # return data with 201 created success code
+        return json_data, 201
 
 
 class ImageMetaDataEndpoint(Resource):
@@ -123,7 +124,7 @@ class ImageMetaDataEndpoint(Resource):
                 }
             ]
         }
-        return {'data': image_meta_data}, 200  # return data and 200 OK code
+        return image_meta_data, 200  # return data and 200 OK code
 
     def post(self):
         """
@@ -137,7 +138,8 @@ class ImageMetaDataEndpoint(Resource):
         """
         json_data = request.json
         # TODO validate json data
-        return {'data': json_data}, 200  # return data with 200 OK
+        # return data with 201 created success code
+        return json_data, 201
 
 
 class ImageAnalysisDataEndpoint(Resource):
@@ -214,7 +216,7 @@ class ImageAnalysisDataEndpoint(Resource):
             ]
         }
         # return data and 200 OK code
-        return {'data': image_analysis_data}, 200
+        return image_analysis_data, 200
 
     def post(self):
         """
@@ -229,7 +231,8 @@ class ImageAnalysisDataEndpoint(Resource):
         json_data = request.json
         print(json_data)
         # TODO validate json data
-        return {'data': json_data}, 200  # return data with 200 OK
+        # return data with 201 created success code
+        return json_data, 201
 
 
 def create_app(test_config=None):
@@ -285,9 +288,12 @@ def create_app(test_config=None):
         """
         return page
 
-    api.add_resource(PartDataEndpoint, '/api/part_data')
-    api.add_resource(ImageMetaDataEndpoint, '/api/image_meta_data')
-    api.add_resource(ImageAnalysisDataEndpoint, '/api/image_analysis_data')
+    api.add_resource(
+        PartDataEndpoint, '/imath-rest-backend/part')
+    api.add_resource(
+        ImageMetaDataEndpoint, '/imath-rest-backend/image_meta_data')
+    api.add_resource(
+        ImageAnalysisDataEndpoint, '/imath-rest-backend/image_analysis_data')
 
     return app, api
 
