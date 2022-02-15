@@ -85,7 +85,7 @@ class Dimension:
         Z-axis dimension
 
     """
-    def __init__(self, x:float, y:float, z: float):
+    def __init__(self, x: float, y: float, z: float):
         """
         Dimension construction.
 
@@ -137,7 +137,7 @@ class Position:
         Z-axis position
 
     """
-    def __init__(self, x:float, y:float, z: float):
+    def __init__(self, x: float, y: float, z: float):
         """
         Position construction.
 
@@ -332,7 +332,8 @@ class ImageAnalysisFailure:
     """
     def __init__(
             self, id: str, failure: str,
-            position: Position, dimension: Dimension, qualifying_metadata: list):
+            position: Position, dimension: Dimension,
+            qualifying_metadata: list):
         """
         Image analysis failure construction.
 
@@ -373,6 +374,7 @@ class ImageAnalysisFailure:
             "dimension": self.dimension.get_json(),
             "qualifying_metadata": self.qualifying_metadata
         }
+
 
 class ImageAnalysisData:
     """
@@ -418,7 +420,7 @@ class ImageAnalysisData:
         """
         self.part_id = part_id
         self.source = source
-        self.value = value 
+        self.value = value
         self.timestamp = timestamp
         self.failures = failures
 
@@ -436,11 +438,11 @@ class ImageAnalysisData:
         for failure in self.failures:
             failures_json_list.append(failure.get_json())
         return {
-        	"part_id": self.part_id,
-        	"source": self.source,
-        	"value": self.value,
-        	"timestamp": self.timestamp,
-        	"failures": failures_json_list
+            "part_id": self.part_id,
+            "source": self.source,
+            "value": self.value,
+            "timestamp": self.timestamp,
+            "failures": failures_json_list
         }
 
     @staticmethod
@@ -470,13 +472,14 @@ class ImageAnalysisData:
 
     def post(self, url: str) -> None:
         data = self.get_json()
-        response = requests.post(url, json = data)
+        response = requests.post(url, json=data)
         return response
 
     @staticmethod
     def get(url: str) -> 'ImageAnalysisData':
         json = requests.get(url).json()['data']
         return ImageAnalysisData.from_json(json)
+
 
 if __name__ == "__main__":
     url = 'http://127.0.0.1:5000/api/image_analysis_data'

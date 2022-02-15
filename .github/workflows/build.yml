@@ -1,0 +1,26 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout code
+      - uses: actions/checkout@v2
+      # Setup python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install setuptools wheel twine sphinx sphinx-rtd-theme
+          sudo apt-get install python3-sphinx
+      # Build
+      - name: Build
+        run: python setup.py sdist bdist_wheel
