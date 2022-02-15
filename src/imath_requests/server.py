@@ -42,19 +42,6 @@ class PartDataEndpoint(Resource):
                 {
                     "key": "rolling_schedule",
                     "value": "Schedule1"
-                },
-                {
-                    "key": "analysis",
-                    "value": [
-                        {
-                            "key": "C",
-                            "value": "0.2"
-                        },
-                        {
-                            "key": "Mn",
-                            "value": "0.02"
-                        }
-                    ]
                 }
             ]
         }
