@@ -2,4 +2,5 @@ include pyproject.toml
 include release.md
 include version.template
 include LICENSE
+include *.txt
 recursive-include tests test*.py

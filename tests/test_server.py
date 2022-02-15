@@ -20,14 +20,14 @@ class TestPartDataEndpoint(unittest.TestCase):
         self.client = app.test_client()
 
     def test_part_data_get(self):
-        self.client.get('/api/part_data', follow_redirects=True)
+        self.client.get('/imath-rest-backend/part', follow_redirects=True)
 
     def test_part_data_post(self):
         part_data = {
-            "timestamp": 1516193959559,
-            "part_id": "Part1234",
+            "identifiedTime": 1516193959559,
+            "partId": "Part1234",
             "source": "Camera_Control_PC_Garret",
-            "part_data": [
+            "partData": [
                 {
                     "key": "steel_grade",
                     "value": "Grade01"
@@ -39,20 +39,7 @@ class TestPartDataEndpoint(unittest.TestCase):
                 {
                     "key": "rolling_schedule",
                     "value": "Schedule1"
-                },
-                {
-                    "key": "analysis",
-                    "value": [
-                        {
-                            "key": "C",
-                            "value": "0.2"
-                        },
-                        {
-                            "key": "Mn",
-                            "value": "0.02"
-                        }
-                    ]
                 }
             ]
         }
-        self.client.post('/api/part_data', data=part_data, follow_redirects=True)
+        self.client.post('/imath-rest-backend/part', data=part_data, follow_redirects=True)

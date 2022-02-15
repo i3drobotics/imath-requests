@@ -7,20 +7,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
+
     steps:
       # Checkout code
       - uses: actions/checkout@v2
       # Setup python
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.x"
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install setuptools wheel twine sphinx sphinx-rtd-theme
-          sudo apt-get install python3-sphinx
-      # Build
-      - name: Build
-        run: python setup.py sdist bdist_wheel
+          python-version: ${{ matrix.python-version }}
+      - name: Install Tox
+        run: pip install tox
+      # Build & Test module with Tox
+      - name: Run Tox
+        run: tox -e py
