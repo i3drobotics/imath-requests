@@ -113,10 +113,13 @@ def _response_exception(resp: Response):
     raise ResponseError(resp)
 
 
-def post(json_data: dict, ip, username, password):
+def post(json_data: dict, ip, username, password, client=None):
     url = _get_url(ip)
-    header = _generate_server_header(username, password)
-    resp = requests.post(url, json=[json_data], headers=header)
+    if client is None:
+        header = _generate_server_header(username, password)
+        resp = requests.post(url, json=[json_data], headers=header)
+    else:
+        resp = client.post(url, json=[json_data])
     status_code = resp.status_code
     if (100 <= status_code and status_code <= 399):
         return resp
@@ -124,9 +127,9 @@ def post(json_data: dict, ip, username, password):
         _response_exception(resp)
 
 
-def post_data(request_data: RequestData, ip, username, password):
+def post_data(request_data: RequestData, ip, username, password, client=None):
     json_data = request_data.to_json()
-    return post(json_data, ip, username, password)
+    return post(json_data, ip, username, password, client)
 
 
 # TODO get response

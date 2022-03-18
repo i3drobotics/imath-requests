@@ -9,10 +9,6 @@ from imath_requests.request import Pose3D
 from imath_requests.request import PartInspectionData
 from imath_requests.request import ImageInspectionData
 from imath_requests.request import DefectData, DefectType, MetaData
-from imath_requests.request import post_data
-from imath_requests.server import create_app
-import requests
-import multiprocessing
 
 
 class TestPose3D(unittest.TestCase):
@@ -171,78 +167,6 @@ class TestPartInspectionData(unittest.TestCase):
             ]}
         part_inspection_data.to_json()
         assert(part_inspection_data.to_json() == json_expected)
-
-
-class TestPartInspectionDataEndpoint(unittest.TestCase):
-    """
-    Unit testing part data in requests with mock server.
-
-    """
-    def setUp(self):
-        self.server_name = "127.0.0.1:5000"
-        self.server_username = "test"
-        self.server_password = "test"
-        self.app, self.api = create_app({'SERVER_NAME': self.server_name})
-        self.app_thread = multiprocessing.Process(target=self.app.run)
-        self.app_thread.start()
-        # poll server to check it's ready for testing
-        while True:
-            try:
-                requests.get(
-                    "http://{}/".format(self.server_name), timeout=0.5)
-                return
-            except requests.exceptions.ConnectionError:
-                pass
-
-    def tearDown(self):
-        self.app_thread.terminate()
-
-    # TODO add when get method exists
-    # def test_get(self):
-    #     part_data = PartData.get(
-    #         self.server_name,
-    #         self.server_username,
-    #         self.server_password)
-    #     self.assertIsNotNone(part_data)
-
-    def test_post(self):
-        inspection_time = 1647606457463.4841
-        data_source = 'I3DR_test'
-        identified_by = 'I3DR_test_user'
-        captured_by = 'I3DR_test_camera'
-        supplier = 'I3DR'
-        part_id = 'Part_I3DR_test_003'
-        image_name = "I3DR_test_003.tif"
-        defect_code = "315"
-        image_position = Pose3D(0, 0, 0)
-        image_dimension = Pose3D(5000, 1, 0)
-        defect_position = Pose3D(0, 0, 0)
-        defect_dimension = Pose3D(5000, 1, 0)
-        part_inspection_data = PartInspectionData(
-            part_id, data_source, inspection_time,
-            [
-                ImageInspectionData(
-                    image_name,
-                    captured_by, inspection_time,
-                    image_position, image_dimension,
-                    [
-                        DefectData(
-                            DefectType(defect_code),
-                            identified_by, inspection_time,
-                            defect_position, defect_dimension)
-                    ]
-                )
-            ],
-            [
-                MetaData("supplier", supplier)
-            ]
-        )
-        resp = post_data(
-            part_inspection_data,
-            self.server_name,
-            self.server_username,
-            self.server_password)
-        self.assertEqual(resp.status_code, 201)
 
 
 if __name__ == '__main__':
