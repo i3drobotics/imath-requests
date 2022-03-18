@@ -79,7 +79,6 @@
  | <a href="#I"><strong>I</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#P"><strong>P</strong></a>
- | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -92,10 +91,12 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageMetaData.captured_by">captured_by (imath_requests.request.ImageMetaData attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.ImageInspectionData.captured_by">captured_by (imath_requests.request.ImageInspectionData attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autocode.html#imath_requests.request.DefectType.code">code (imath_requests.request.DefectType attribute)</a>
+</li>
       <li><a href="autocode.html#imath_requests.server.create_app">create_app() (in module imath_requests.server)</a>
 </li>
   </ul></td>
@@ -104,20 +105,20 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.DataRequest">DataRequest (class in imath_requests.request)</a>
+      <li><a href="autocode.html#imath_requests.request.DefectData.defect_type">defect_type (imath_requests.request.DefectData attribute)</a>
 </li>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisDefect.defect_type_id">defect_type_id (imath_requests.request.ImageAnalysisDefect attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.DefectData">DefectData (class in imath_requests.request)</a>
 </li>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisData.defects">defects (imath_requests.request.ImageAnalysisData attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.ImageInspectionData.defects">defects (imath_requests.request.ImageInspectionData attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.Dimension">Dimension (class in imath_requests.request)</a>
+      <li><a href="autocode.html#imath_requests.request.DefectType">DefectType (class in imath_requests.request)</a>
 </li>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisDefect.dimension">dimension (imath_requests.request.ImageAnalysisDefect attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.DefectData.dimension">dimension (imath_requests.request.DefectData attribute)</a>
 
       <ul>
-        <li><a href="autocode.html#imath_requests.request.ImageData.dimension">(imath_requests.request.ImageData attribute)</a>
+        <li><a href="autocode.html#imath_requests.request.ImageInspectionData.dimension">(imath_requests.request.ImageInspectionData attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -134,16 +135,20 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageData.filename">filename (imath_requests.request.ImageData attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.ImageInspectionData.filename">filename (imath_requests.request.ImageInspectionData attribute)</a>
 </li>
-      <li><a href="autocode.html#imath_requests.request.DataRequest.from_json">from_json() (imath_requests.request.DataRequest static method)</a>
+      <li><a href="autocode.html#imath_requests.request.DefectData.from_json">from_json() (imath_requests.request.DefectData static method)</a>
 
       <ul>
-        <li><a href="autocode.html#imath_requests.request.ImageAnalysisData.from_json">(imath_requests.request.ImageAnalysisData static method)</a>
+        <li><a href="autocode.html#imath_requests.request.DefectType.from_json">(imath_requests.request.DefectType static method)</a>
 </li>
-        <li><a href="autocode.html#imath_requests.request.PartData.from_json">(imath_requests.request.PartData static method)</a>
+        <li><a href="autocode.html#imath_requests.request.ImageInspectionData.from_json">(imath_requests.request.ImageInspectionData static method)</a>
 </li>
-        <li><a href="autocode.html#imath_requests.request.PartProperty.from_json">(imath_requests.request.PartProperty static method)</a>
+        <li><a href="autocode.html#imath_requests.request.MetaData.from_json">(imath_requests.request.MetaData static method)</a>
+</li>
+        <li><a href="autocode.html#imath_requests.request.PartInspectionData.from_json">(imath_requests.request.PartInspectionData static method)</a>
+</li>
+        <li><a href="autocode.html#imath_requests.request.RequestData.from_json">(imath_requests.request.RequestData static method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -152,23 +157,7 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.DataRequest.generate_server_header">generate_server_header() (imath_requests.request.DataRequest static method)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.DataRequest.get">get() (imath_requests.request.DataRequest class method)</a>
-
-      <ul>
-        <li><a href="autocode.html#imath_requests.server.ImageAnalysisDataEndpoint.get">(imath_requests.server.ImageAnalysisDataEndpoint method)</a>
-</li>
-        <li><a href="autocode.html#imath_requests.server.ImageMetaDataEndpoint.get">(imath_requests.server.ImageMetaDataEndpoint method)</a>
-</li>
-        <li><a href="autocode.html#imath_requests.server.PartDataEndpoint.get">(imath_requests.server.PartDataEndpoint method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.DataRequest.get_api_endpoint">get_api_endpoint() (imath_requests.request.DataRequest static method)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.DataRequest.get_url">get_url() (imath_requests.request.DataRequest class method)</a>
+      <li><a href="autocode.html#imath_requests.server.PartEndpoint.get">get() (imath_requests.server.PartEndpoint method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -184,26 +173,16 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisDefect.id">id (imath_requests.request.ImageAnalysisDefect attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.PartInspectionData.id">id (imath_requests.request.PartInspectionData attribute)</a>
 </li>
-      <li><a href="autocode.html#imath_requests.request.PartData.identifiedTime">identifiedTime (imath_requests.request.PartData attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.DefectData.identified_by">identified_by (imath_requests.request.DefectData attribute)</a>
 </li>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisData">ImageAnalysisData (class in imath_requests.request)</a>
+      <li><a href="autocode.html#imath_requests.request.ImageInspectionData">ImageInspectionData (class in imath_requests.request)</a>
 </li>
-      <li><a href="autocode.html#imath_requests.server.ImageAnalysisDataEndpoint">ImageAnalysisDataEndpoint (class in imath_requests.server)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisDefect">ImageAnalysisDefect (class in imath_requests.request)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.ImageData">ImageData (class in imath_requests.request)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.ImageMetaData">ImageMetaData (class in imath_requests.request)</a>
+      <li><a href="autocode.html#imath_requests.request.PartInspectionData.images">images (imath_requests.request.PartInspectionData attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.server.ImageMetaDataEndpoint">ImageMetaDataEndpoint (class in imath_requests.server)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.ImageMetaData.images">images (imath_requests.request.ImageMetaData attribute)</a>
-</li>
       <li>
     imath_requests.request
 
@@ -226,14 +205,12 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.server.ImageAnalysisDataEndpoint.methods">methods (imath_requests.server.ImageAnalysisDataEndpoint attribute)</a>
-
-      <ul>
-        <li><a href="autocode.html#imath_requests.server.ImageMetaDataEndpoint.methods">(imath_requests.server.ImageMetaDataEndpoint attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.PartInspectionData.meta_datas">meta_datas (imath_requests.request.PartInspectionData attribute)</a>
 </li>
-        <li><a href="autocode.html#imath_requests.server.PartDataEndpoint.methods">(imath_requests.server.PartDataEndpoint attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.MetaData">MetaData (class in imath_requests.request)</a>
 </li>
-      </ul></li>
+      <li><a href="autocode.html#imath_requests.server.PartEndpoint.methods">methods (imath_requests.server.PartEndpoint attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
@@ -251,59 +228,29 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisData.part_id">part_id (imath_requests.request.ImageAnalysisData attribute)</a>
+      <li><a href="autocode.html#imath_requests.server.PartEndpoint">PartEndpoint (class in imath_requests.server)</a>
+</li>
+      <li><a href="autocode.html#imath_requests.request.PartInspectionData">PartInspectionData (class in imath_requests.request)</a>
+</li>
+      <li><a href="autocode.html#imath_requests.request.Pose3D">Pose3D (class in imath_requests.request)</a>
+</li>
+      <li><a href="autocode.html#imath_requests.request.DefectData.position">position (imath_requests.request.DefectData attribute)</a>
 
       <ul>
-        <li><a href="autocode.html#imath_requests.request.ImageMetaData.part_id">(imath_requests.request.ImageMetaData attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="autocode.html#imath_requests.request.PartData">PartData (class in imath_requests.request)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.server.PartDataEndpoint">PartDataEndpoint (class in imath_requests.server)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.PartData.partId">partId (imath_requests.request.PartData attribute)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.PartProperty">PartProperty (class in imath_requests.request)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.Position">Position (class in imath_requests.request)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisDefect.position">position (imath_requests.request.ImageAnalysisDefect attribute)</a>
-
-      <ul>
-        <li><a href="autocode.html#imath_requests.request.ImageData.position">(imath_requests.request.ImageData attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="autocode.html#imath_requests.request.DataRequest.post">post() (imath_requests.request.DataRequest method)</a>
-
-      <ul>
-        <li><a href="autocode.html#imath_requests.server.ImageAnalysisDataEndpoint.post">(imath_requests.server.ImageAnalysisDataEndpoint method)</a>
-</li>
-        <li><a href="autocode.html#imath_requests.server.ImageMetaDataEndpoint.post">(imath_requests.server.ImageMetaDataEndpoint method)</a>
-</li>
-        <li><a href="autocode.html#imath_requests.server.PartDataEndpoint.post">(imath_requests.server.PartDataEndpoint method)</a>
-</li>
-      </ul></li>
-      <li><a href="autocode.html#imath_requests.request.PartData.properties">properties (imath_requests.request.PartData attribute)</a>
-</li>
-      <li><a href="autocode.html#imath_requests.request.PartProperty.property">property (imath_requests.request.PartProperty attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="Q">Q</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisDefect.qualifying_metadata">qualifying_metadata (imath_requests.request.ImageAnalysisDefect attribute)</a>
-
-      <ul>
-        <li><a href="autocode.html#imath_requests.request.ImageMetaData.qualifying_metadata">(imath_requests.request.ImageMetaData attribute)</a>
+        <li><a href="autocode.html#imath_requests.request.ImageInspectionData.position">(imath_requests.request.ImageInspectionData attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageData.quality">quality (imath_requests.request.ImageData attribute)</a>
+      <li><a href="autocode.html#imath_requests.server.PartEndpoint.post">post() (imath_requests.server.PartEndpoint method)</a>
+
+      <ul>
+        <li><a href="autocode.html#imath_requests.request.post">(in module imath_requests.request)</a>
+</li>
+      </ul></li>
+      <li><a href="autocode.html#imath_requests.request.post_data">post_data() (in module imath_requests.request)</a>
+</li>
+      <li><a href="autocode.html#imath_requests.request.MetaData.property">property (imath_requests.request.MetaData attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -311,10 +258,12 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.RequestError">RequestError</a>
+      <li><a href="autocode.html#imath_requests.request.RequestData">RequestData (class in imath_requests.request)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autocode.html#imath_requests.request.RequestError">RequestError</a>
+</li>
       <li><a href="autocode.html#imath_requests.request.ResponseError">ResponseError</a>
 </li>
   </ul></td>
@@ -323,44 +272,36 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisData.source">source (imath_requests.request.ImageAnalysisData attribute)</a>
-
-      <ul>
-        <li><a href="autocode.html#imath_requests.request.ImageMetaData.source">(imath_requests.request.ImageMetaData attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.PartInspectionData.source">source (imath_requests.request.PartInspectionData attribute)</a>
 </li>
-        <li><a href="autocode.html#imath_requests.request.PartData.source">(imath_requests.request.PartData attribute)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisData.timestamp">timestamp (imath_requests.request.ImageAnalysisData attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.DefectData.timestamp">timestamp (imath_requests.request.DefectData attribute)</a>
 
       <ul>
-        <li><a href="autocode.html#imath_requests.request.ImageData.timestamp">(imath_requests.request.ImageData attribute)</a>
+        <li><a href="autocode.html#imath_requests.request.ImageInspectionData.timestamp">(imath_requests.request.ImageInspectionData attribute)</a>
+</li>
+        <li><a href="autocode.html#imath_requests.request.PartInspectionData.timestamp">(imath_requests.request.PartInspectionData attribute)</a>
 </li>
       </ul></li>
-      <li><a href="autocode.html#imath_requests.request.DataRequest.to_json">to_json() (imath_requests.request.DataRequest method)</a>
+      <li><a href="autocode.html#imath_requests.request.timestamp">timestamp() (in module imath_requests.request)</a>
+</li>
+      <li><a href="autocode.html#imath_requests.request.DefectData.to_json">to_json() (imath_requests.request.DefectData method)</a>
 
       <ul>
-        <li><a href="autocode.html#imath_requests.request.Dimension.to_json">(imath_requests.request.Dimension method)</a>
+        <li><a href="autocode.html#imath_requests.request.DefectType.to_json">(imath_requests.request.DefectType method)</a>
 </li>
-        <li><a href="autocode.html#imath_requests.request.ImageAnalysisData.to_json">(imath_requests.request.ImageAnalysisData method)</a>
+        <li><a href="autocode.html#imath_requests.request.ImageInspectionData.to_json">(imath_requests.request.ImageInspectionData method)</a>
 </li>
-        <li><a href="autocode.html#imath_requests.request.ImageAnalysisDefect.to_json">(imath_requests.request.ImageAnalysisDefect method)</a>
+        <li><a href="autocode.html#imath_requests.request.MetaData.to_json">(imath_requests.request.MetaData method)</a>
 </li>
-        <li><a href="autocode.html#imath_requests.request.ImageData.to_json">(imath_requests.request.ImageData method)</a>
+        <li><a href="autocode.html#imath_requests.request.PartInspectionData.to_json">(imath_requests.request.PartInspectionData method)</a>
 </li>
-        <li><a href="autocode.html#imath_requests.request.ImageMetaData.to_json">(imath_requests.request.ImageMetaData method)</a>
-</li>
-        <li><a href="autocode.html#imath_requests.request.PartData.to_json">(imath_requests.request.PartData method)</a>
-</li>
-        <li><a href="autocode.html#imath_requests.request.PartProperty.to_json">(imath_requests.request.PartProperty method)</a>
-</li>
-        <li><a href="autocode.html#imath_requests.request.Position.to_json">(imath_requests.request.Position method)</a>
+        <li><a href="autocode.html#imath_requests.request.RequestData.to_json">(imath_requests.request.RequestData method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -369,12 +310,10 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.ImageAnalysisData.value">value (imath_requests.request.ImageAnalysisData attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.MetaData.value">value (imath_requests.request.MetaData attribute)</a>
 
       <ul>
-        <li><a href="autocode.html#imath_requests.request.PartProperty.value">(imath_requests.request.PartProperty attribute)</a>
-</li>
-        <li><a href="autocode.html#id0">(imath_requests.request.PartProperty property)</a>
+        <li><a href="autocode.html#id0">(imath_requests.request.MetaData property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -383,36 +322,24 @@
 <h2 id="X">X</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.Dimension.x">x (imath_requests.request.Dimension attribute)</a>
-
-      <ul>
-        <li><a href="autocode.html#imath_requests.request.Position.x">(imath_requests.request.Position attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.Pose3D.x">x (imath_requests.request.Pose3D attribute)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="Y">Y</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.Dimension.y">y (imath_requests.request.Dimension attribute)</a>
-
-      <ul>
-        <li><a href="autocode.html#imath_requests.request.Position.y">(imath_requests.request.Position attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.Pose3D.y">y (imath_requests.request.Pose3D attribute)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="Z">Z</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autocode.html#imath_requests.request.Dimension.z">z (imath_requests.request.Dimension attribute)</a>
-
-      <ul>
-        <li><a href="autocode.html#imath_requests.request.Position.z">(imath_requests.request.Position attribute)</a>
+      <li><a href="autocode.html#imath_requests.request.Pose3D.z">z (imath_requests.request.Pose3D attribute)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -425,7 +352,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Industrial 3D Robotics.</p>
+    <p>&#169; Copyright 2022, Industrial 3D Robotics.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
