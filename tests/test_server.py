@@ -5,8 +5,6 @@ Unit testing for server module
 """
 
 import unittest
-import pytest
-import tempfile
 from imath_requests.server import create_app
 
 
@@ -16,30 +14,47 @@ class TestPartDataEndpoint(unittest.TestCase):
 
     """
     def setUp(self):
-        app, api = create_app({'TESTING': True})
+        self.endpoint = '/imath-rest-backend/part'
+        app, _ = create_app({'TESTING': True})
         self.client = app.test_client()
 
     def test_part_data_get(self):
-        self.client.get('/imath-rest-backend/part', follow_redirects=True)
+        self.client.get(self.endpoint, follow_redirects=True)
 
     def test_part_data_post(self):
-        part_data = {
-            "identifiedTime": 1516193959559,
-            "partId": "Part1234",
-            "source": "Camera_Control_PC_Garret",
+        json_data = {
+            "partId": "Part_I3DR_test_003",
+            "source": "I3DR_test",
+            "identifiedTime": 1647606457463.4841,
             "partData": [
                 {
-                    "key": "steel_grade",
-                    "value": "Grade01"
-                },
-                {
-                    "key": "heat_number",
-                    "value": "C1234566"
-                },
-                {
-                    "key": "rolling_schedule",
-                    "value": "Schedule1"
+                    "key": "supplier",
+                    "string": "I3DR"
                 }
-            ]
-        }
-        self.client.post('/imath-rest-backend/part', data=part_data, follow_redirects=True)
+            ],
+            "images": [
+                {
+                    "imageFileName": "I3DR_test_003.tif",
+                    "capturedBy": "I3DR_test_camera",
+                    "capturedTime": 1647606457463.4841,
+                    "positionX": 0,
+                    "positionY": 0,
+                    "positionZ": 0,
+                    "dimensionX": 5000,
+                    "dimensionY": 1,
+                    "dimensionZ": 0,
+                    "defects": [
+                        {
+                            "defectType": {
+                                "code": "315"
+                            },
+                            "identifiedBy": "I3DR_test_user",
+                            "identifiedTime": 1647606457463.4841,
+                            "positionX": 0, "positionY": 0,
+                            "positionZ": 0, "dimensionX": 0,
+                            "dimensionY": 0, "dimensionZ": 0
+                        }
+                    ]
+                }
+            ]}
+        self.client.post(self.endpoint, data=json_data, follow_redirects=True)

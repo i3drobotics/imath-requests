@@ -6,6 +6,7 @@ Request handelling and data structures for interacting with iMath REST API
 
 import requests
 import base64
+from datetime import datetime, timezone
 from abc import ABC, abstractmethod
 from requests import Response
 
@@ -22,10 +23,13 @@ class ResponseError(RequestError):
         self.message += "Status Code: {}\n".format(response.status_code)
         json_data = response.json()
         if 'exceptionClass' in json_data and 'message' in json_data:
-            self.message += "Exception: {}\n".format(json_data['exceptionClass'])
-            self.message += "Message: {}\n".format(json_data['message'])
+            self.message += "Exception: {}\n".format(
+                json_data['exceptionClass'])
+            self.message += "Message: {}\n".format(
+                json_data['message'])
         else:
-            self.message += "Description: {}".format(response.text)
+            self.message += "Description: {}".format(
+                response.text)
         super().__init__(self.message)
 
 
@@ -93,7 +97,7 @@ def _generate_server_header(username, password):
 
 
 def _get_url(ip: str) -> str:
-    return 'http://{}/imath-rest-backend'.format(ip)
+    return 'http://{}/imath-rest-backend/part'.format(ip)
 
 
 def _response_exception(resp: Response):
@@ -109,16 +113,20 @@ def _response_exception(resp: Response):
     raise ResponseError(resp)
 
 
-def post(data: RequestData, ip, username, password):
-    data = data.to_json()
+def post(json_data: dict, ip, username, password):
     url = _get_url(ip)
     header = _generate_server_header(username, password)
-    resp = requests.post(url, json=[data], headers=header)
+    resp = requests.post(url, json=[json_data], headers=header)
     status_code = resp.status_code
     if (100 <= status_code and status_code <= 399):
         return resp
     else:
         _response_exception(resp)
+
+
+def post_data(request_data: RequestData, ip, username, password):
+    json_data = request_data.to_json()
+    return post(json_data, ip, username, password)
 
 
 # TODO get response
@@ -449,7 +457,7 @@ class ImageInspectionData(RequestData):
         return {
             "imageFileName": self.filename,
             "capturedBy": self.captured_by,
-            "identifiedTime": self.timestamp,
+            "capturedTime": self.timestamp,
             "positionX": self.position.x,
             "positionY": self.position.y,
             "positionZ": self.position.z,
@@ -463,7 +471,7 @@ class ImageInspectionData(RequestData):
     def from_json(json_data: str) -> 'ImageInspectionData':
         filename = json_data['imageFileName']
         captured_by = json_data['capturedBy']
-        timestamp = json_data['identifiedTime']
+        timestamp = json_data['capturedTime']
         position = Pose3D(
             json_data['positionX'],
             json_data['positionY'],
@@ -543,7 +551,7 @@ class PartInspectionData(RequestData):
         for meta_data in self.meta_datas:
             meta_data_json_list.append(meta_data.to_json())
         return {
-            "part_id": self.id,
+            "partId": self.id,
             "source": self.source,
             "identifiedTime": self.timestamp,
             "partData": meta_data_json_list,
@@ -552,7 +560,7 @@ class PartInspectionData(RequestData):
 
     @staticmethod
     def from_json(json_data: str) -> 'PartInspectionData':
-        id = json_data['part_id']
+        id = json_data['partId']
         source = json_data['source']
         timestamp = json_data['identifiedTime']
         images = []
@@ -564,9 +572,12 @@ class PartInspectionData(RequestData):
         return PartInspectionData(id, source, timestamp, images, meta_datas)
 
 
+def timestamp(dt: datetime):
+    return dt.replace(tzinfo=timezone.utc).timestamp() * 1000
+
+
 if __name__ == "__main__":
     import os
-    from datetime import datetime
     import json
 
     if 'IMATH_SERVER_IP' in os.environ:
@@ -582,17 +593,16 @@ if __name__ == "__main__":
     else:
         server_password = 'test'
 
-    inspection_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+    inspection_time = timestamp(datetime.now())
     data_source = 'I3DR_test'
     identified_by = 'I3DR_test_user'
     captured_by = 'I3DR_test_camera'
     supplier = 'I3DR'
-    image_fpt = '/2112-50003_002_01/cam_1/'
     part_inspection_data = PartInspectionData(
-        'Part_I3DR_test_001', data_source, inspection_time,
+        'Part_I3DR_test_003', data_source, inspection_time,
         [
             ImageInspectionData(
-                image_fpt+"cam1_2112-50003_002_01_01_000059.tif",
+                "I3DR_test_003.tif",
                 captured_by, inspection_time,
                 Pose3D(0, 0, 0), Pose3D(5000, 1, 0),
                 [
@@ -607,7 +617,6 @@ if __name__ == "__main__":
         ]
     )
     print(json.dumps(part_inspection_data.to_json()))
-    resp = post(
-        part_inspection_data,
-        server_ip, server_username, server_password)
+    resp = post_data(part_inspection_data,
+                     server_ip, server_username, server_password)
     print(resp)

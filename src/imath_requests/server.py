@@ -9,13 +9,14 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 
 
-class PartDataEndpoint(Resource):
+class PartEndpoint(Resource):
     """
     Part data API endpoint class.
 
     Resource used in Flask app to mock REST API.
 
     """
+
     def get(self):
         """
         REST API get request to return part data.
@@ -26,26 +27,42 @@ class PartDataEndpoint(Resource):
             part data (json), status code
 
         """
-        part_data = {
-            "identifiedTime": 1516193959559,
-            "partId": "Part1234",
-            "source": "Camera_Control_PC_Garret",
+        json_data = {
+            "partId": "Part_I3DR_test_003",
+            "source": "I3DR_test",
+            "identifiedTime": 1647606457463.4841,
             "partData": [
                 {
-                    "key": "steel_grade",
-                    "value": "Grade01"
-                },
-                {
-                    "key": "heat_number",
-                    "value": "C1234566"
-                },
-                {
-                    "key": "rolling_schedule",
-                    "value": "Schedule1"
+                    "key": "supplier",
+                    "string": "I3DR"
                 }
-            ]
-        }
-        return part_data, 200  # return data and 200 OK code
+            ],
+            "images": [
+                {
+                    "imageFileName": "I3DR_test_003.tif",
+                    "capturedBy": "I3DR_test_camera",
+                    "capturedTime": 1647606457463.4841,
+                    "positionX": 0,
+                    "positionY": 0,
+                    "positionZ": 0,
+                    "dimensionX": 5000,
+                    "dimensionY": 1,
+                    "dimensionZ": 0,
+                    "defects": [
+                        {
+                            "defectType": {
+                                "code": "315"
+                            },
+                            "identifiedBy": "I3DR_test_user",
+                            "identifiedTime": 1647606457463.4841,
+                            "positionX": 0, "positionY": 0,
+                            "positionZ": 0, "dimensionX": 0,
+                            "dimensionY": 0, "dimensionZ": 0
+                        }
+                    ]
+                }
+            ]}
+        return json_data, 200  # return data and 200 OK code
 
     def post(self):
         """
@@ -58,165 +75,6 @@ class PartDataEndpoint(Resource):
 
         """
         json_data = request.json
-        # TODO validate json data
-        # return data with 201 created success code
-        return json_data, 201
-
-
-class ImageMetaDataEndpoint(Resource):
-    """
-    Image meta data API endpoint class.
-
-    Resource used in Flask app to mock REST API.
-
-    """
-    def get(self):
-        """
-        REST API get request to return image meta data.
-
-        Returns
-        -------
-        tuple, int
-            part data (json), status code
-
-        """
-        image_meta_data = {
-            "part_id": "Part1234",
-            "value_id": "Camera1",
-            "source": "Camera_Control_PC_Garret",
-            "values": [
-                {
-                    "value": "Part1234_1.1_2.2_1.jpg",
-                    "timestamp": "1516193959559",
-                    "position": [346.2, 2.0, 0.0],
-                    "dimension": [5.2, 1.0, 0.0],
-                    "quality": "1"
-                },
-                {
-                    "value": "Part1234_1.1_2.2_2.jpg",
-                    "timestamp": "1516193959559",
-                    "position": [246.2, 5.0, 0.0],
-                    "dimension": [1.7, 4.0, 0.0],
-                    "quality": "-1"
-                }
-            ],
-            "qualifying_metadata": [
-                {
-                    "key": "key1",
-                    "value": "value1"
-                },
-                {
-                    "key": "key2",
-                    "value": "value2"
-                }
-            ]
-        }
-        return image_meta_data, 200  # return data and 200 OK code
-
-    def post(self):
-        """
-        REST API post request to accept image meta data.
-
-        Returns
-        -------
-        tuple, int
-            part data (json), status code
-
-        """
-        json_data = request.json
-        # TODO validate json data
-        # return data with 201 created success code
-        return json_data, 201
-
-
-class ImageAnalysisDataEndpoint(Resource):
-    """
-    Image analysis data API endpoint class.
-
-    Resource used in Flask app to mock REST API.
-
-    """
-    def get(self):
-        """
-        REST API get request to return image analysis data.
-
-        Returns
-        -------
-        tuple, int
-            part data (json), status code
-
-        """
-        image_analysis_data = {
-            "part_id": "Part1234",
-            "source": "Analysis System",
-            "value": "Part1234_1.1_2.2_1.jpg",
-            "timestamp": "1516193959559",
-            "failures": [
-                {
-                    "id": 124355435321576,
-                    "failure": "4711",
-                    "position": [
-                        44.2,
-                        17.4,
-                        0.0
-                    ],
-                    "dimension": [
-                        5.2,
-                        1.0,
-                        0.0
-                    ],
-                    "qualifying_metadata": [
-                        {
-                            "key": "xxx",
-                            "value": "1"
-                        },
-                        {
-                            "key": "yyy",
-                            "value": "2"
-                        }
-                    ]
-                },
-                {
-                    "id": 124355435321578,
-                    "failure": "4712",
-                    "position": [
-                        33.2,
-                        3.0,
-                        0.0
-                    ],
-                    "dimension": [
-                        2.3,
-                        1.1,
-                        0.0,
-                    ],
-                    "qualifying_metadata": [
-                        {
-                            "key": "xxx",
-                            "value": "1"
-                        },
-                        {
-                            "key": "yyy",
-                            "value": "2"
-                        }
-                    ]
-                }
-            ]
-        }
-        # return data and 200 OK code
-        return image_analysis_data, 200
-
-    def post(self):
-        """
-        REST API post request to accept image analysis data.
-
-        Returns
-        -------
-        tuple, int
-            part data (json), status code
-
-        """
-        json_data = request.json
-        print(json_data)
         # TODO validate json data
         # return data with 201 created success code
         return json_data, 201
@@ -268,19 +126,13 @@ def create_app(test_config=None):
             <h1>Welcome to iMath Requests test server</h1>
             <h3>The following API endpoints are available:</h3>
             <ul>
-                <li>/part_data</li>
-                <li>/image_meta_data</li>
-                <li>/image_analysis_data</li>
+                <li>/part</li>
             </ul>
         """
         return page
 
     api.add_resource(
-        PartDataEndpoint, '/imath-rest-backend/part')
-    api.add_resource(
-        ImageMetaDataEndpoint, '/imath-rest-backend/image_meta_data')
-    api.add_resource(
-        ImageAnalysisDataEndpoint, '/imath-rest-backend/image_analysis_data')
+        PartEndpoint, '/imath-rest-backend/part')
 
     return app, api
 
