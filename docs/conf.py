@@ -5,7 +5,7 @@ import imath_requests
 # -- Project information -----------------------------------------------------
 
 project = 'iMath Requests'
-copyright = '2021, Industrial 3D Robotics'
+copyright = '2022, Industrial 3D Robotics'
 author = 'Industrial 3D Robotics'
 version = imath_requests.__version__
 
