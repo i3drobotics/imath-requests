@@ -4,9 +4,9 @@ request.py
 Request handelling and data structures for interacting with iMath REST API
 """
 
-from typing import Type
 import requests
 import base64
+from datetime import datetime, timezone
 from abc import ABC, abstractmethod
 from requests import Response
 
@@ -21,12 +21,15 @@ class ResponseError(RequestError):
     def __init__(self, response: Response):
         self.message = "Server responded with exception.\n"
         self.message += "Status Code: {}\n".format(response.status_code)
-        json = response.json()
-        if 'exceptionClass' in json and 'message' in json:
-            self.message += "Exception: {}\n".format(json['exceptionClass'])
-            self.message += "Message: {}\n".format(json['message'])
+        json_data = response.json()
+        if 'exceptionClass' in json_data and 'message' in json_data:
+            self.message += "Exception: {}\n".format(
+                json_data['exceptionClass'])
+            self.message += "Message: {}\n".format(
+                json_data['message'])
         else:
-            self.message += "Description: {}".format(response.text)
+            self.message += "Description: {}".format(
+                response.text)
         super().__init__(self.message)
 
 
@@ -53,12 +56,7 @@ class EntityExistsError(iMathResponseError):
             iMathResponseError._server_class_base() + ".EntityExistsException"
 
 
-class DataRequest(ABC):
-
-    @staticmethod
-    def get_api_endpoint() -> str:
-        return "part"
-
+class RequestData(ABC):
     @abstractmethod
     def to_json(self) -> dict:
         # MUST be implimented by child class
@@ -73,85 +71,130 @@ class DataRequest(ABC):
     def __str__(self) -> str:
         return str(self.to_json())
 
-    @staticmethod
-    def generate_server_header(username, password):
+
+def _generate_server_header(username, password):
+    """
+    Get header for iMath REST API.
+
+    Parameters
+    ----------
+    username : str
+        username for iMath REST API
+    password : str
+        password for iMath REST API
+
+    Returns
+    -------
+    dict
+        header for iMath REST API
+
+    """
+    auth_string = "{}:{}".format(username, password)
+    auth_string_b64 = base64.b64encode(auth_string.encode()).decode()
+    return {
+        "Authorization": "Basic {}".format(auth_string_b64)
+    }
+
+
+def _get_url(ip: str) -> str:
+    return 'http://{}/imath-rest-backend/part'.format(ip)
+
+
+def _response_exception(resp: Response):
+    json_data = resp.json()
+    if 'exceptionClass' in json_data and 'message' in json_data:
+        exception_class_name = json_data['exceptionClass']
+        exceptions = [
+            HttpRequestMethodNotSupportedError,
+            EntityExistsError]
+        for exception in exceptions:
+            if exception_class_name == exception._server_class():
+                raise exception(resp)
+    raise ResponseError(resp)
+
+
+def post(json_data: dict, ip, username, password, client=None):
+    url = _get_url(ip)
+    if client is None:
+        header = _generate_server_header(username, password)
+        resp = requests.post(url, json=[json_data], headers=header)
+    else:
+        resp = client.post(url, json=[json_data])
+    status_code = resp.status_code
+    if (100 <= status_code and status_code <= 399):
+        return resp
+    else:
+        _response_exception(resp)
+
+
+def post_data(request_data: RequestData, ip, username, password, client=None):
+    json_data = request_data.to_json()
+    return post(json_data, ip, username, password, client)
+
+
+# TODO get response
+# def get(ip: str, username: str, password: str):
+#         url = _get_url(ip)
+#         header = _generate_server_header(username, password)
+#         res = requests.get(url, headers=header)
+#         status_code = res.status_code
+#         if (100 <= status_code and status_code <= 399):
+#             json = res.json()
+#             return cls.from_json(json)
+#         else:
+#             _response_exception(res)
+
+
+class Pose3D():
+    """
+    Pose 3D class.
+
+    Store pose data as x, y, z
+
+    Attributes
+    ----------
+    x: float
+        X component of pose
+    y: float
+        Y component of pose
+    z: float
+        Z component of pose
+
+    """
+
+    def __init__(
+            self, x: float, y: float, z: float):
         """
-        Get header for iMath REST API.
+        Meta data construction.
 
         Parameters
         ----------
-        username : str
-            username for iMath REST API
-        password : str
-            password for iMath REST API
-
-        Returns
-        -------
-        dict
-            header for iMath REST API
+        x: float
+            X component of pose
+        y: float
+            Y component of pose
+        z: float
+            Z component of pose
 
         """
-        auth_string = "{}:{}".format(username, password)
-        auth_string_b64 = base64.b64encode(auth_string.encode()).decode()
-        return {
-            "Authorization": "Basic {}".format(auth_string_b64)
-        }
-
-    @classmethod
-    def get_url(cls, ip: str) -> str:
-        api_endpoint = cls.get_api_endpoint()
-        return 'http://{}/imath-rest-backend/{}'.format(ip, api_endpoint)
-
-    @staticmethod
-    def _response_exception(resp: Response):
-        json = resp.json()
-        if 'exceptionClass' in json and 'message' in json:
-            exception_class_name = json['exceptionClass']
-            exceptions = [
-                HttpRequestMethodNotSupportedError,
-                EntityExistsError]
-            for exception in exceptions:
-                if exception_class_name == exception._server_class():
-                    raise exception(resp)
-        raise ResponseError(resp)
-
-    def post(self, ip: str, username: str, password: str) -> None:
-        data = self.to_json()
-        url = self.__class__.get_url(ip)
-        header = DataRequest.generate_server_header(username, password)
-        resp = requests.post(url, json=[data], headers=header)
-        status_code = resp.status_code
-        if (100 <= status_code and status_code <= 399):
-            return resp
-        else:
-            DataRequest._response_exception(resp)
-
-    @classmethod
-    def get(cls, ip: str, username: str, password: str):
-        url = cls.get_url(ip)
-        header = DataRequest.generate_server_header(username, password)
-        res = requests.get(url, headers=header)
-        status_code = res.status_code
-        if (100 <= status_code and status_code <= 399):
-            json = res.json()
-            return cls.from_json(json)
-        else:
-            DataRequest._response_exception(res)
+        self.x = x
+        self.y = y
+        self.z = z
 
 
-class PartProperty(DataRequest):
+class MetaData(RequestData):
     """
-    Part property helper class.
+    Meta data helper class.
 
     Includes addition functions creating json
-    data from part property for easy use in REST API.
+    data from meta data for easy use in REST API.
 
     Attributes
     ----------
     property: str
-        Name of part property
+        Name of meta data
     value: str/int/float
-        value of part property
+        value of meta data
 
     """
 
@@ -161,14 +204,14 @@ class PartProperty(DataRequest):
     def __init__(
             self, property: str, value: any):
         """
-        Part property construction.
+        Meta data construction.
 
         Parameters
         ----------
         property: str
-            Name of meta data property
+            Name of meta data
         value: str/int/float
-            value of part property
+            value of meta data
 
         """
         self.property = property
@@ -180,12 +223,12 @@ class PartProperty(DataRequest):
 
     @value.setter
     def value(self, value):
-        if (type(value) not in PartProperty.__valid_types):
+        if (type(value) not in MetaData.__valid_types):
             err_msg = "Invalid type for part property value. "
             err_msg += "MUST be str, int, or float."
             raise TypeError(err_msg)
         self._value = value
-        iter = zip(PartProperty.__valid_types, PartProperty.__type_names)
+        iter = zip(MetaData.__valid_types, MetaData.__type_names)
         for valid_type, type_name in iter:
             if type(value) == valid_type:
                 self.value_type = type_name
@@ -193,7 +236,7 @@ class PartProperty(DataRequest):
 
     def to_json(self) -> dict:
         """
-        Convert PartProperty into json string for use in REST API.
+        Convert MetaData into json string for use in REST API.
 
         Returns
         -------
@@ -207,62 +250,45 @@ class PartProperty(DataRequest):
         }
 
     @staticmethod
-    def from_json(json: dict) -> 'PartProperty':
-        if 'key' not in json:
+    def from_json(json_data: dict) -> 'MetaData':
+        if 'key' not in json_data:
             raise ValueError("Invalid json for part property. Missing 'key'.")
 
-        iter = zip(PartProperty.__valid_types, PartProperty.__type_names)
+        iter = zip(MetaData.__valid_types, MetaData.__type_names)
         for valid_types, type_name in iter:
-            if type_name in json:
-                return PartProperty(json['key'], valid_types(json[type_name]))
+            if type_name in json_data:
+                return MetaData(
+                    json_data['key'], valid_types(json_data[type_name]))
 
 
-class PartData(DataRequest):
+class DefectType(RequestData):
     """
-    Part data helper class.
+    Defect data helper class.
 
-    Includes addition functions creating json
-    data from part data for easy use in REST API.
+    TODO: Add description
 
     Attributes
     ----------
-    identifiedTime: str
-        Timestamp e.g. 1516193959559
-    partId: str
-        Unique part ID e.g. Part1234
-    source: str
-        Data source e.g. I3DR_DESKTOP_ABC123
-    properties: list
-        List of PartProperty. Additional part properties.
+    code : str
+        defect code
 
     """
 
-    def __init__(
-            self, identifiedTime: str, partId: str,
-            source: str, properties: list):
+    def __init__(self, code: str):
         """
-        Part construction.
+        Defect data helper class.
 
         Parameters
         ----------
-        identifiedTime: str
-            Timestamp e.g. 1516193959559
-        partId: str
-            Unique part ID e.g. Part1234
-        source: str
-            Data source e.g. I3DR_DESKTOP_ABC123
-        properties: list
-            List of PartProperty. Additional part properties.
+        code : str
+            defect code
 
         """
-        self.identifiedTime = identifiedTime
-        self.partId = partId
-        self.source = source
-        self.properties = properties
+        self.code = code
 
     def to_json(self) -> dict:
         """
-        Convert PartData into json string for use in REST API.
+        Convert DefectType into json string for use in REST API.
 
         Returns
         -------
@@ -270,393 +296,157 @@ class PartData(DataRequest):
             Json formatted string
 
         """
-        props_json_list = []
-        for prop in self.properties:
-            props_json_list.append(prop.to_json())
         return {
-            "identifiedTime": self.identifiedTime,
-            "partId": self.partId,
-            "source": self.source,
-            "partData": props_json_list
+            "code": self.code,
         }
 
     @staticmethod
-    def from_json(json: dict) -> 'PartData':
-        valid_keys = ["identifiedTime", "partId", "source", "partData"]
-        for key in valid_keys:
-            if key not in json:
-                raise ValueError(
-                    "Invalid json for part data. Missing '{}'".format(key))
-        props_json_list = json['partData']
-        properties = []
-        for prop_json in props_json_list:
-            properties.append(
-                PartProperty.from_json(prop_json))
-        return PartData(
-            json['identifiedTime'], json['partId'],
-            json['source'], properties
-        )
+    def from_json(json_data: str) -> 'DefectType':
+        code = json_data['code']
+        return DefectType(code)
 
 
-class Dimension:
+class DefectData(RequestData):
     """
-    Dimension helper class.
+    Defect data helper class.
 
-    Includes addition functions creating json data
-    from part data for easy use in REST API.
+    TODO: Add description
 
     Attributes
     ----------
-    x: float
-        X-axis dimension
-    y: float
-        Y-axis dimension
-    z: float
-        Z-axis dimension
-
-    """
-    def __init__(self, x: float, y: float, z: float):
-        """
-        Dimension construction.
-
-        Parameters
-        ----------
-        x: float
-            X-axis dimension
-        y: float
-            Y-axis dimension
-        z: float
-            Z-axis dimension
-
-        """
-        self.x = x
-        self.y = y
-        self.z = z
-
-    def to_json(self):
-        """
-        Convert Dimension into json string for use in REST API.
-
-        Returns
-        -------
-        dict
-            Json formatted string
-
-        """
-        return [
-            self.x,
-            self.y,
-            self.z
-        ]
-
-
-class Position:
-    """
-    Position helper class.
-
-    Includes addition functions creating json data
-    from part data for easy use in REST API.
-
-    Attributes
-    ----------
-    x: float
-        X-axis position
-    y: float
-        Y-axis position
-    z: float
-        Z-axis position
-
-    """
-    def __init__(self, x: float, y: float, z: float):
-        """
-        Position construction.
-
-        Parameters
-        ----------
-        x: float
-            X-axis position
-        y: float
-            Y-axis position
-        z: float
-            Z-axis position
-
-        """
-        self.x = x
-        self.y = y
-        self.z = z
-
-    def to_json(self):
-        """
-        Convert Position into json string for use in REST API.
-
-        Returns
-        -------
-        dict
-            Json formatted string
-
-        """
-        return [
-            self.x,
-            self.y,
-            self.z
-        ]
-
-
-class ImageData:
-    """
-    Image Data helper class.
-
-    Includes addition functions creating json data
-    from part data for easy use in REST API.
-
-    Attributes
-    ----------
-    filename: str
-        Name of the image e.g. test001.png
-    timestamp: str
+    defect_type : DefectType
+        defect type
+    identified_by : str
+        Data source e.g. I3DR_DESKTOP_ABC123
+    timestamp : str
         Timestamp e.g. 1516193959559
-    position: Position
-        Position on the part where the image was taken
-    dimension: Dimension
-        Dimension of the area of the part, which is on the image
-    quality: str
-        Quality
+    position : Position
+        Position of defect
+    dimension : Dimension
+        Dimension of defect
 
     """
 
     def __init__(
-            self, filename: str, timestamp: str,
-            position: Position, dimension: Dimension, quality: str):
+            self, defect_type: DefectType, identified_by: str, timestamp: str,
+            position: Pose3D, dimension: Pose3D):
         """
-        Image data construction.
+        Image Inspection data helper class.
 
         Parameters
         ----------
-        filename: str
-            Name of the image e.g. test001.png
-        timestamp: str
+        defect_type : DefectType
+            defect type
+        identified_by : str
+            Data source e.g. I3DR_DESKTOP_ABC123
+        timestamp : str
             Timestamp e.g. 1516193959559
-        position: str
-            Position on the part where the image was taken
-        dimension: str
-            Dimension of the area of the part, which is on the image
-        quality : str
-            Quality
+        position : Position
+            Position of defect
+        dimension : Dimension
+            Dimension of defect
+
+        """
+        self.defect_type = defect_type
+        self.identified_by = identified_by
+        self.timestamp = timestamp
+        self.position = position
+        self.dimension = dimension
+
+    def to_json(self) -> dict:
+        """
+        Convert ImageInspectionData into json string for use in REST API.
+
+        Returns
+        -------
+        dict
+            Json formatted string
+
+        """
+        return {
+            "defectType": self.defect_type.to_json(),
+            "identifiedBy": self.identified_by,
+            "identifiedTime": self.timestamp,
+            "positionX": self.position.x,
+            "positionY": self.position.y,
+            "positionZ": self.position.z,
+            "dimensionX": self.dimension.x,
+            "dimensionY": self.dimension.y,
+            "dimensionZ": self.dimension.z
+        }
+
+    @staticmethod
+    def from_json(json_data: str) -> 'ImageInspectionData':
+        defect_type = DefectType.from_json(json_data['defectType'])
+        identified_by = json_data['identifiedBy']
+        timestamp = json_data['identifiedTime']
+        position = Pose3D(
+            json_data['positionX'],
+            json_data['positionY'],
+            json_data['positionZ'])
+        dimension = Pose3D(
+            json_data['dimensionX'],
+            json_data['dimensionY'],
+            json_data['dimensionZ'])
+        return DefectData(
+            defect_type, identified_by, timestamp, position, dimension)
+
+
+class ImageInspectionData(RequestData):
+    """
+    Image Inspection data helper class.
+
+    TODO: Add description
+
+    Attributes
+    ----------
+    filename : str
+        Image filename
+    captured_by : str
+        Data source e.g. I3DR_DESKTOP_ABC123
+    timestamp : str
+        Timestamp e.g. 1516193959559
+    position: Pose3D
+        Position of defect
+    dimension: Pose3D
+        Dimension of defect
+    defects: list
+        List of DefectData
+
+    """
+
+    def __init__(
+            self, filename: str, captured_by: str, timestamp: str,
+            position: Pose3D, dimension: Pose3D, defects: list):
+        """
+        Image Inspection data helper class.
+
+        Parameters
+        ----------
+        filename : str
+            Image filename
+        captured_by : str
+            Data source e.g. I3DR_DESKTOP_ABC123
+        timestamp : str
+            Timestamp e.g. 1516193959559
+        position: Pose3D
+            Position of defect
+        dimension: Pose3D
+            Dimension of defect
+        defects: list
+            List of DefectData
 
         """
         self.filename = filename
-        self.timestamp = timestamp
-        self.position = position
-        self.dimension = dimension
-        self.quality = quality
-
-    def to_json(self) -> dict:
-        """
-        Convert ImageData into json string for use in REST API.
-
-        Returns
-        -------
-        dict
-            Json formatted string
-
-        """
-        return {
-            "filename": self.filename,
-            "timestamp": self.timestamp,
-            "position": self.position.to_json(),
-            "dimension": self.dimension.to_json(),
-            "quality": self.quality
-        }
-
-
-class ImageMetaData:
-    """
-    Image meta data helper class.
-
-    Includes addition functions creating json data
-    from image meta data for easy use in REST API.
-
-    Attributes
-    ----------
-    part_id: str
-        Unique part ID e.g. Part1234
-    captured_by: str
-        Unique identification of the capture device e.g. Camera1
-    source: str
-        Data source e.g. I3DR_DESKTOP_ABC123
-    images: list
-        List of ImageData
-    qualifying_metadata: list
-        Qualifying metadata should be a key value pair array
-
-    """
-
-    def __init__(
-            self, part_id: str, captured_by: str,
-            source: str, values: list, qualifying_metadata):
-        """
-        Image meta data construction.
-
-        Parameters
-        ----------
-        part_id: str
-            Unique part ID e.g. Part1234
-        captured_by: str
-            Unique identification of the capture device e.g. Camera1
-        source: str
-            Data source e.g. I3DR_DESKTOP_ABC123
-        values: list
-            List of ImageValues
-        qualifying_metadata: list
-            Qualifying metadata should be a key value pair array
-
-        """
-        self.part_id = part_id
         self.captured_by = captured_by
-        self.source = source
-        self.values = values
-        self.qualifying_metadata = qualifying_metadata
-
-    def to_json(self) -> dict:
-        """
-        Convert ImageMetaData into json string for use in REST API.
-
-        Returns
-        -------
-        dict
-            Json formatted string
-
-        """
-        values_json_list = []
-        for value in self.values:
-            values_json_list.append(value.to_json())
-        return {
-            "part_id": self.part_id,
-            "captured_by": self.captured_by,
-            "source": self.source,
-            "values": values_json_list,
-            "qualifying_metadata": self.qualifying_metadata
-        }
-
-
-class ImageAnalysisDefect:
-    """
-    Image analysis defect helper class.
-
-    Includes addition functions creating json data
-    from part data for easy use in REST API.
-
-    Attributes
-    ----------
-    id: str
-        Unique defect id e.g. 124355435321576
-    defect_type_id: str
-        defect type id e.g. 4711
-    position: Position
-        Position on the part where the image was taken
-    dimension: Dimension
-        Dimension of the area of the part, which is on the image
-    qualifying_metadata: list
-        Qualifying metadata should be a key value pair array
-
-    """
-    def __init__(
-            self, id: str, defect_type_id: str,
-            position: Position, dimension: Dimension,
-            qualifying_metadata: list):
-        """
-        Image analysis defect construction.
-
-        Parameters
-        ----------
-        id: str
-            Unique defect id e.g. 124355435321576
-        defect_type_id: str
-            defect type id e.g. 4711
-        position: Position
-            Position on the part where the image was taken
-        dimension: Dimension
-            Dimension of the area of the part, which is on the image
-        qualifying_metadata: list
-            Qualifying metadata should be a key value pair array
-
-        """
-        self.id = id
-        self.defect_type_id = defect_type_id
+        self.timestamp = timestamp
         self.position = position
         self.dimension = dimension
-        self.qualifying_metadata = qualifying_metadata
-
-    def to_json(self) -> dict:
-        """
-        Convert ImageAnalysisDefect into json string for use in REST API.
-
-        Returns
-        -------
-        dict
-            Json formatted string
-
-        """
-        return {
-            "id": self.id,
-            "defect_type_id": self.defect_type_id,
-            "position": self.position.to_json(),
-            "dimension": self.dimension.to_json(),
-            "qualifying_metadata": self.qualifying_metadata
-        }
-
-
-class ImageAnalysisData(DataRequest):
-    """
-    Image analysis data helper class.
-
-    Includes addition functions creating json data
-    from image analysis data for easy use in REST API.
-
-    Attributes
-    ----------
-    part_id : str
-        Unique part ID e.g. Part1234
-    source : str
-        Data source e.g. I3DR_DESKTOP_ABC123
-    value: list
-        List of ImageData
-    timestamp : str
-        Timestamp e.g. 1516193959559
-    defects: list
-        list of ImageAnalysisDefect
-
-    """
-
-    def __init__(
-            self, part_id: str, source: str,
-            value: list, timestamp: str, defects: list):
-        """
-        Image Meta Data construction.
-
-        Parameters
-        ----------
-        part_id : str
-            Unique part ID e.g. Part1234
-        source : str
-            Data source e.g. I3DR_DESKTOP_ABC123
-        value: str
-            Name of the image (NOT ImageValue)
-        timestamp : str
-            Timestamp e.g. 1516193959559
-        defects: list
-            list of ImageAnalysisDefect
-
-        """
-        self.part_id = part_id
-        self.source = source
-        self.value = value
-        self.timestamp = timestamp
         self.defects = defects
 
     def to_json(self) -> dict:
         """
-        Convert ImageAnalysisData into json string for use in REST API.
+        Convert ImageInspectionData into json string for use in REST API.
 
         Returns
         -------
@@ -668,41 +458,130 @@ class ImageAnalysisData(DataRequest):
         for defect in self.defects:
             defects_json_list.append(defect.to_json())
         return {
-            "part_id": self.part_id,
-            "source": self.source,
-            "value": self.value,
-            "timestamp": self.timestamp,
+            "imageFileName": self.filename,
+            "capturedBy": self.captured_by,
+            "capturedTime": self.timestamp,
+            "positionX": self.position.x,
+            "positionY": self.position.y,
+            "positionZ": self.position.z,
+            "dimensionX": self.dimension.x,
+            "dimensionY": self.dimension.y,
+            "dimensionZ": self.dimension.z,
             "defects": defects_json_list
         }
 
     @staticmethod
-    def from_json(json: str) -> 'ImageAnalysisData':
-        part_id = json['part_id']
-        source = json['source']
-        value = json['value']
-        timestamp = json['timestamp']
+    def from_json(json_data: str) -> 'ImageInspectionData':
+        filename = json_data['imageFileName']
+        captured_by = json_data['capturedBy']
+        timestamp = json_data['capturedTime']
+        position = Pose3D(
+            json_data['positionX'],
+            json_data['positionY'],
+            json_data['positionZ'])
+        dimension = Pose3D(
+            json_data['dimensionX'],
+            json_data['dimensionY'],
+            json_data['dimensionZ'])
         defects = []
-        for defect in json['defects']:
-            position = Position(
-                defect['position'][0],
-                defect['position'][1],
-                defect['position'][2])
-            dimension = Dimension(
-                defect['dimension'][0],
-                defect['dimension'][1],
-                defect['dimension'][2])
-            defects.append(
-                ImageAnalysisDefect(
-                    defect['id'], defect['defect_type_id'], position,
-                    dimension, defect['qualifying_metadata']
-                )
-            )
-        return ImageAnalysisData(
-            part_id, source, value, timestamp, defects)
+        for defect in json_data['defects']:
+            defects.append(DefectData.from_json(defect))
+        return ImageInspectionData(
+            filename, captured_by, timestamp, position, dimension, defects)
+
+
+class PartInspectionData(RequestData):
+    """
+    Part Inspection data helper class.
+
+    TODO: Add description
+
+    Attributes
+    ----------
+    id : str
+        Unique part ID e.g. Part1234
+    source : str
+        Data source e.g. I3DR_DESKTOP_ABC123
+    timestamp : str
+        Timestamp e.g. 1516193959559
+    images: list
+        List of ImageInspectionData
+    meta_datas: list
+        List of MetaData
+
+    """
+
+    def __init__(
+            self, id: str, source: str, timestamp: str,
+            images: list, meta_datas: list):
+        """
+        Image Meta Data construction.
+
+        Parameters
+        ----------
+        id : str
+            Unique part ID e.g. Part1234
+        source : str
+            Data source e.g. I3DR_DESKTOP_ABC123
+        timestamp : str
+            Timestamp e.g. 1516193959559
+        images: list
+            List of ImageInspectionData
+        meta_datas: list
+            List of MetaData
+
+        """
+        self.id = id
+        self.source = source
+        self.timestamp = timestamp
+        self.images = images
+        self.meta_datas = meta_datas
+
+    def to_json(self) -> dict:
+        """
+        Convert InspectionData into json string for use in REST API.
+
+        Returns
+        -------
+        dict
+            Json formatted string
+
+        """
+        images_json_list = []
+        for image in self.images:
+            images_json_list.append(image.to_json())
+        meta_data_json_list = []
+        for meta_data in self.meta_datas:
+            meta_data_json_list.append(meta_data.to_json())
+        return {
+            "partId": self.id,
+            "source": self.source,
+            "identifiedTime": self.timestamp,
+            "partData": meta_data_json_list,
+            "images": images_json_list
+        }
+
+    @staticmethod
+    def from_json(json_data: str) -> 'PartInspectionData':
+        id = json_data['partId']
+        source = json_data['source']
+        timestamp = json_data['identifiedTime']
+        images = []
+        for image in json_data['images']:
+            images.append(ImageInspectionData.from_json(image))
+        meta_datas = []
+        for meta_data in json_data['partData']:
+            meta_datas.append(MetaData.from_json(meta_data))
+        return PartInspectionData(id, source, timestamp, images, meta_datas)
+
+
+def timestamp(dt: datetime):
+    return dt.replace(tzinfo=timezone.utc).timestamp() * 1000
 
 
 if __name__ == "__main__":
     import os
+    import json
 
     if 'IMATH_SERVER_IP' in os.environ:
         server_ip = os.environ['IMATH_SERVER_IP']
@@ -717,11 +596,30 @@ if __name__ == "__main__":
     else:
         server_password = 'test'
 
-    part = PartData(
-        '1516193959559', 'Part43211', 'I3DR_DESKTOP_ABC123',
+    inspection_time = timestamp(datetime.now())
+    data_source = 'I3DR_test'
+    identified_by = 'I3DR_test_user'
+    captured_by = 'I3DR_test_camera'
+    supplier = 'I3DR'
+    part_inspection_data = PartInspectionData(
+        'Part_I3DR_test_003', data_source, inspection_time,
         [
-            PartProperty("Steel grade", "Grade01")
+            ImageInspectionData(
+                "I3DR_test_003.tif",
+                captured_by, inspection_time,
+                Pose3D(0, 0, 0), Pose3D(5000, 1, 0),
+                [
+                    DefectData(
+                        DefectType("315"), identified_by, inspection_time,
+                        Pose3D(0, 0, 0), Pose3D(0, 0, 0))
+                ]
+            )
+        ],
+        [
+            MetaData("supplier", supplier)
         ]
     )
-    resp = part.post(server_ip, server_username, server_password)
+    print(json.dumps(part_inspection_data.to_json()))
+    resp = post_data(part_inspection_data,
+                     server_ip, server_username, server_password)
     print(resp)

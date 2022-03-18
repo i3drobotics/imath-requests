@@ -5,127 +5,168 @@ Unit testing for request module
 """
 
 import unittest
-from imath_requests.request import PartData, PartProperty
-from imath_requests.request import Position, Dimension
-from imath_requests.server import create_app
-import requests
-import multiprocessing
+from imath_requests.request import Pose3D
+from imath_requests.request import PartInspectionData
+from imath_requests.request import ImageInspectionData
+from imath_requests.request import DefectData, DefectType, MetaData
 
 
-class TestPosition(unittest.TestCase):
+class TestPose3D(unittest.TestCase):
     """
-    Unit testing for Position class in requests module.
+    Unit testing for Pose3D class in requests module.
 
     """
     def test_init_position(self):
-        position = Position(44.2, 17.4, 0.0)
-
-    def test_position_json(self):
-        position = Position(44.2, 17.4, 0.0)
-        position_json = position.to_json()
-        # TODO add position json generation test
+        pose = Pose3D(44.2, 17.4, 0.0)
+        assert(pose.x == 44.2)
+        assert(pose.y == 17.4)
+        assert(pose.z == 0.0)
 
 
-class TestDimension(unittest.TestCase):
+class TestPartInspectionData(unittest.TestCase):
     """
-    Unit testing for Dimension class in requests module.
+    Unit testing for PartInspectionData class in requests module.
 
     """
-    def test_init_dimension(self):
-        dimension = Dimension(44.2, 17.4, 0.0)
-
-    def test_dimension_json(self):
-        dimension = Dimension(5.2, 1.0, 0.0)
-        dimension_json = dimension.to_json()
-        # TODO add dimension json generation test
-
-
-class TestRequestsPartData(unittest.TestCase):
-    """
-    Unit testing for PartData class in requests module.
-
-    """
-    def test_init_part_data(self):
+    def test_init(self):
         """
-        Test generation of part data class
+        Test generation of part inspection data class
         """
-        property_list = [
-            PartProperty("Steel grade", "Grade01"),
-            PartProperty("Heat number", "C1234566"),
-            PartProperty("Rolling schedule", "Schedule1"),
-            PartProperty("Analysis C", 0.2),
-            PartProperty("Analysis Mn", 0.02),
-            PartProperty("Rod length", 2500)
-        ]
-        part_data = PartData(
-            "1516193959559", "Part1234", "I3DR_DESKTOP_ABC123", property_list)
+        inspection_time = 1647606457463.4841
+        data_source = 'I3DR_test'
+        identified_by = 'I3DR_test_user'
+        captured_by = 'I3DR_test_camera'
+        supplier = 'I3DR'
+        part_id = 'Part_I3DR_test_003'
+        image_name = "I3DR_test_003.tif"
+        defect_code = "315"
+        image_position = Pose3D(0, 0, 0)
+        image_dimension = Pose3D(5000, 1, 0)
+        defect_position = Pose3D(0, 0, 0)
+        defect_dimension = Pose3D(5000, 1, 0)
+        part_inspection_data = PartInspectionData(
+            part_id, data_source, inspection_time,
+            [
+                ImageInspectionData(
+                    image_name,
+                    captured_by, inspection_time,
+                    image_position, image_dimension,
+                    [
+                        DefectData(
+                            DefectType(defect_code),
+                            identified_by, inspection_time,
+                            defect_position, defect_dimension)
+                    ]
+                )
+            ],
+            [
+                MetaData("supplier", supplier)
+            ]
+        )
+        assert(part_inspection_data.id == part_id)
+        assert(part_inspection_data.source == data_source)
+        assert(part_inspection_data.timestamp == inspection_time)
+        assert(len(part_inspection_data.images) == 1)
+        image = part_inspection_data.images[0]
+        assert(image.filename == image_name)
+        assert(image.captured_by == captured_by)
+        assert(image.timestamp == inspection_time)
+        assert(image.position.x == image_position.x)
+        assert(image.position.y == image_position.y)
+        assert(image.position.z == image_position.z)
+        assert(image.dimension.x == image_dimension.x)
+        assert(image.dimension.y == image_dimension.y)
+        assert(image.dimension.z == image_dimension.z)
+        assert(len(image.defects) == 1)
+        defect = image.defects[0]
+        assert(defect.defect_type.code == defect_code)
+        assert(defect.identified_by == identified_by)
+        assert(defect.timestamp == inspection_time)
+        assert(defect.position.x == defect_position.x)
+        assert(defect.position.y == defect_position.y)
+        assert(defect.position.z == defect_position.z)
+        assert(defect.dimension.x == defect_dimension.x)
+        assert(defect.dimension.y == defect_dimension.y)
+        assert(defect.dimension.z == defect_dimension.z)
+        assert(part_inspection_data.meta_datas[0].property == "supplier")
+        assert(part_inspection_data.meta_datas[0].value == supplier)
 
-    def test_part_data_json(self):
+    def test_json(self):
         """
         Tests part data json generation.
 
         """
-        property_list = [
-            PartProperty("Steel grade", "Grade01"),
-            PartProperty("Heat number", "C1234566"),
-            PartProperty("Rolling schedule", "Schedule1"),
-            PartProperty("Analysis C", 0.2),
-            PartProperty("Analysis Mn", 0.02),
-            PartProperty("Rod length", 2500)
-        ]
-        part_data = PartData(
-            "1516193959559", "Part1234", "I3DR_DESKTOP_ABC123", property_list)
-        part_data.to_json()
-        # TODO add part data json generation test
-
-
-class TestPartDataEndpoint(unittest.TestCase):
-    """
-    Unit testing part data in requests with mock server.
-
-    """
-    def setUp(self):
-        self.server_name = "127.0.0.1:5000"
-        self.server_username = "test"
-        self.server_password = "test"
-        self.app, self.api = create_app({'SERVER_NAME': self.server_name})
-        self.app_thread = multiprocessing.Process(target=self.app.run)
-        self.app_thread.start()
-        # poll server to check it's ready for testing
-        while True:
-            try:
-                requests.get(
-                    "http://{}/".format(self.server_name), timeout=0.5)
-                return
-            except requests.exceptions.ConnectionError:
-                pass
-
-    def tearDown(self):
-        self.app_thread.terminate()
-
-    def test_part_data_get(self):
-        part_data = PartData.get(
-            self.server_name,
-            self.server_username,
-            self.server_password)
-        self.assertIsNotNone(part_data)
-
-    def test_part_data_post(self):
-        property_list = [
-            PartProperty("Steel grade", "Grade01"),
-            PartProperty("Heat number", "C1234566"),
-            PartProperty("Rolling schedule", "Schedule1"),
-            PartProperty("Analysis C", 0.2),
-            PartProperty("Analysis Mn", 0.02),
-            PartProperty("Rod length", 2500)
-        ]
-        part_data = PartData(
-            "1516193959559", "Part1234", "I3DR_DESKTOP_ABC123", property_list)
-        resp = part_data.post(
-            self.server_name,
-            self.server_username,
-            self.server_password)
-        self.assertEqual(resp.status_code, 201)
+        inspection_time = 1647606457463.4841
+        data_source = 'I3DR_test'
+        identified_by = 'I3DR_test_user'
+        captured_by = 'I3DR_test_camera'
+        supplier = 'I3DR'
+        part_id = 'Part_I3DR_test_003'
+        image_name = "I3DR_test_003.tif"
+        defect_code = "315"
+        image_position = Pose3D(0, 0, 0)
+        image_dimension = Pose3D(5000, 1, 0)
+        defect_position = Pose3D(0, 0, 0)
+        defect_dimension = Pose3D(5000, 1, 0)
+        part_inspection_data = PartInspectionData(
+            part_id, data_source, inspection_time,
+            [
+                ImageInspectionData(
+                    image_name,
+                    captured_by, inspection_time,
+                    image_position, image_dimension,
+                    [
+                        DefectData(
+                            DefectType(defect_code),
+                            identified_by, inspection_time,
+                            defect_position, defect_dimension)
+                    ]
+                )
+            ],
+            [
+                MetaData("supplier", supplier)
+            ]
+        )
+        json_expected = {
+            "partId": part_id,
+            "source": data_source,
+            "identifiedTime": inspection_time,
+            "partData": [
+                {
+                    "key": "supplier",
+                    "string": supplier
+                }
+            ],
+            "images": [
+                {
+                    "imageFileName": image_name,
+                    "capturedBy": captured_by,
+                    "capturedTime": inspection_time,
+                    "positionX": image_position.x,
+                    "positionY": image_position.y,
+                    "positionZ": image_position.z,
+                    "dimensionX": image_dimension.x,
+                    "dimensionY": image_dimension.y,
+                    "dimensionZ": image_dimension.z,
+                    "defects": [
+                        {
+                            "defectType": {
+                                "code": defect_code
+                            },
+                            "identifiedBy": identified_by,
+                            "identifiedTime": inspection_time,
+                            "positionX": defect_position.x,
+                            "positionY": defect_position.y,
+                            "positionZ": defect_position.z,
+                            "dimensionX": defect_dimension.x,
+                            "dimensionY": defect_dimension.y,
+                            "dimensionZ": defect_dimension.z,
+                        }
+                    ]
+                }
+            ]}
+        part_inspection_data.to_json()
+        assert(part_inspection_data.to_json() == json_expected)
 
 
 if __name__ == '__main__':
