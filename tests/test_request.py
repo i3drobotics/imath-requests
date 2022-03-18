@@ -92,8 +92,8 @@ class TestPartInspectionData(unittest.TestCase):
         assert(defect.dimension.x == defect_dimension.x)
         assert(defect.dimension.y == defect_dimension.y)
         assert(defect.dimension.z == defect_dimension.z)
-        assert(part_inspection_data.metadata[0].property == "supplier")
-        assert(part_inspection_data.metadata[0].value == supplier)
+        assert(part_inspection_data.meta_datas[0].property == "supplier")
+        assert(part_inspection_data.meta_datas[0].value == supplier)
 
     def test_json(self):
         """
@@ -189,7 +189,7 @@ class TestPartInspectionDataEndpoint(unittest.TestCase):
         while True:
             try:
                 requests.get(
-                    "http://{}/part".format(self.server_name), timeout=0.5)
+                    "http://{}/".format(self.server_name), timeout=0.5)
                 return
             except requests.exceptions.ConnectionError:
                 pass
